@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+
+  a {
+    @apply text-black
+  }
+
+  .dropdownMenu {
+    @apply border-2 border-dotted
+  }
+
+
+  /*  common css */
+  .input{
+    @apply w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400
+  }
+  .loginBtn{
+    @apply w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-3 px-4 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-transform transform hover:scale-105 shadow-md
+  }
+  .pageWrap {
+    @apply px-5 md:px-10 py-10 min-h-[90vh]
+  }
+
+  .wrap {
+    @apply px-5 md:px-10 py-20
+  }
+
+  .cardTitle {
+    @apply text-2xl md:text-3xl my-8 font-medium
+  }
+
+  .HomeNav {
+    @apply flex justify-center font-medium text-[18px]
+  }
+
+  .HomeNav a {
+    @apply hover:bg-blue-500 hover:text-white px-4 py-2 rounded-md duration-200
+  }
+
+  .servicesWrap {
+    @apply flex flex-wrap justify-center sm:justify-between gap-6 mt-8
+  }
+
+  .servicesCard {
+    @apply w-full sm:w-[48%] lg:w-[31%] bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300 ease-in-out
+  }
+
+  .servicesCard h3 {
+    @apply text-xl font-semibold text-gray-800 mb-2
+  }
+
+  .servicesCard p {
+    @apply text-gray-700 mb-1
+  }
+
+  .servicesCard2 {
+    @apply flex justify-between items-center mt-4
+  }
+
+  .servicesCard2 span {
+    @apply text-yellow-500 font-bold
+  }
+
+  .servicesCard2 button {
+    @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600
+  }
+
+  /*  common css End here*/
+}
+
+@layer utilities {
+
+
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar for Chrome, Safari, and Opera */
+  }
+
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+
+  .input:focus {
+    border-color: #4A90E2;
+    outline: none;
+  }
+}
