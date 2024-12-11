@@ -14,8 +14,7 @@ export const postDataHandler = async (formData, method, endpoint) => {
             body: JSON.stringify(formData)
         });
 
-        const result = await response.json();
-        console.log(result)
+        const result = await response.json(); 
         return { result, status: response.status }
 
     } catch (error) {

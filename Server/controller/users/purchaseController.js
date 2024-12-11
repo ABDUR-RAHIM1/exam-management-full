@@ -7,6 +7,7 @@ export const createPurchase = async (req, res) => {
     try {
         const { userId } = req;
         const { course, paymentStatus } = req.body;
+        console.log(course ,req.body)
 
         // Extract titles from new courses
         const newCourseTitles = course.map(c => c.title);

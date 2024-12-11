@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { IoIosArrowForward, IoIosClose } from "react-icons/io";
 import demoProfile from "@/public/Images/profile.png"
 import ActionsBtn from "./ActionsBtn";
+import Cart from "./profileComponent/Cart";
 
 export default function ProfileSidebar(props) {
     const router = useRouter()
@@ -88,6 +89,9 @@ export default function ProfileSidebar(props) {
                     }</p>
                 </div>
 
+                <div className="mt-8 text-center">
+                    <Cart />
+                </div>
 
                 <ul className="space-y-2 my-16">
                     {profileItems.map((service, index) => (

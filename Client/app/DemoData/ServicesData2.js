@@ -2,6 +2,7 @@ import { routineeImg } from "./DemoImg";
 
 const coursesData = [
     {
+        _id: "1", // Unique identifier
         title: "BCS Special",
         category: "Government Jobs",
         desc: "Comprehensive preparation for BCS with detailed guidance and mock tests.",
@@ -12,6 +13,7 @@ const coursesData = [
         offerPrice: 13000
     },
     {
+        _id: "2", // Unique identifier
         title: "Bank Recruitment Masterclass",
         category: "Banking Sector",
         desc: "Focused course on bank recruitment with weekly exams and skill improvement.",
@@ -22,6 +24,7 @@ const coursesData = [
         offerPrice: 11000
     },
     {
+        _id: "3", // Unique identifier
         title: "NTRC Teaching Mastery",
         category: "Teaching",
         desc: "Tailored course for government teaching exams with pedagogy and practical exercises.",
@@ -32,6 +35,7 @@ const coursesData = [
         offerPrice: 11500
     },
     {
+        _id: "4", // Unique identifier
         title: "Primary School Preparation",
         category: "Teaching",
         desc: "Preparation course for primary school teacher recruitment exams.",

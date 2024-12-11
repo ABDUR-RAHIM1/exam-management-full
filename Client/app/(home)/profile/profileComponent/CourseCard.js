@@ -1,8 +1,10 @@
-import Link from 'next/link';
+
 import React from 'react';
 import CourseActions from './CourseActions';
+import EnrolBtn from './EnrolBtn';
 
 const CourseCard = ({ course }) => {
+
     return (
         <div className="w-[31%] bg-white shadow-md rounded-lg overflow-hidden">
             <div className="p-6">
@@ -45,9 +47,7 @@ const CourseCard = ({ course }) => {
                 </div>
 
                 {/* Enroll Button */}
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-                    Enroll Now
-                </button>
+                <EnrolBtn courseData={course} />
             </div>
 
         </div>
