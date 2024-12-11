@@ -7,6 +7,7 @@ import adminCourseouter from './route/adminCourceRoute.js';
 import testRouter from './Test/TestFileUplaod.js';
 import blogRouter from './route/users/blogRoute.js';
 import purchesRouter from './route/users/purchaseRoute.js';
+import adminRouter from './route/admin/adminAuthRoute.js';
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use("/api/user", blogRouter);
 app.use("/api/user", purchesRouter)
 
 // admin course route
+app.use("/api/admin/auth", adminRouter)
 app.use("/api/course", adminCourseouter)
 
 // Handle undefined routes

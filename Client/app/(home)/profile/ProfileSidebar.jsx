@@ -18,16 +18,15 @@ export default function ProfileSidebar(props) {
 
     const profileItems = [
         { name: "Profile Overview", path: "/profile" },
-        { name: "Course Lists", path: "/profile/course-lists" },
-        { name: "My Course", path: "/profile/my-courses" },
+        { name: "Course Lists", path: "/profile/course-lists" }, 
         { name: "My Exams", path: "/profile/my-exams" },
-        { name: "Upcoming Exams", path: "/profile/upcoming-exams" },
-        { name: "Exam History", path: "/profile/exam-history" },
-        { name: "Certificates", path: "/profile/certificates" },
+        // { name: "Upcoming Exams", path: "/profile/upcoming-exams" },
+        // { name: "Certificates", path: "/profile/certificates" },
+        // { name: "Exam History", path: "/profile/exam-history" },
         { name: "Course Enrollment", path: "/profile/course-enrollment" },
         { name: "Profile Settings", path: "/profile/settings" },
-        { name: "Payment History", path: "/profile/payment-history" },
-        { name: "Support & FAQs", path: "/profile/support" },
+        // { name: "Payment History", path: "/profile/payment-history" },
+        // { name: "Support & FAQs", path: "/profile/support" },
     ];
 
     const toggleSidebar = () => {

@@ -5,7 +5,7 @@ export default function PurcheseCard({ courseData }) {
     const { course, isEnrolled, isCompleted, purchaseDate } = courseData;
 
     return (
-        <div className="w-full border p-4 rounded-md shadow-xl bg-white">
+        <div className="w-full md:w-[31%] border p-4 rounded-md shadow-xl bg-white">
             <p><strong>Enrollment Status:</strong> {isEnrolled ? 'Enrolled' : 'Not Enrolled'}</p>
             <p><strong>Completion Status:</strong> {isCompleted ? 'Completed' : 'Not Completed'}</p>
             <p><strong>Purchase Date:</strong> {new Date(purchaseDate).toLocaleDateString()}</p>
