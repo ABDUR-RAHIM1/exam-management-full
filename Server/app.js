@@ -3,11 +3,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import userRouter from './route/users/userRoute.js';
-import adminCourseouter from './route/adminCourceRoute.js';
 import testRouter from './Test/TestFileUplaod.js';
 import blogRouter from './route/users/blogRoute.js';
 import purchesRouter from './route/users/purchaseRoute.js';
 import adminRouter from './route/admin/adminAuthRoute.js';
+import courseRouter from './route/admin/adminCourseRoute.js';
 
 dotenv.config();
 
@@ -34,8 +34,9 @@ app.use("/api/user", blogRouter);
 app.use("/api/user", purchesRouter)
 
 // admin course route
-app.use("/api/admin/auth", adminRouter)
-app.use("/api/course", adminCourseouter)
+app.use("/api/admin/auth", adminRouter);
+
+app.use("/api/admin/course", courseRouter)
 
 // Handle undefined routes
 app.use((req, res, next) => {

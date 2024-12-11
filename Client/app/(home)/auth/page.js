@@ -64,7 +64,6 @@ const RegistrationPage = () => {
         try {
             // Make API call using `AuthPostHandler`
             const { result, status } = await AuthPostHandler(formData, apiEndpoint);
-            console.log(result)
             if (status === 200) {
                 toast.success(result.message);
 
@@ -189,7 +188,7 @@ const RegistrationPage = () => {
                     {isClick ? "Don't have an account?" : "Already have an account?"}
                     <span
                         onClick={() => setIsClick(!isClick)}
-                        className="text-blue-500 hover:underline cursor-pointer ml-2"
+                        className="formBtn"
                     >
                         {isClick ? "Sign Up Here" : "Login Here"}
                     </span>

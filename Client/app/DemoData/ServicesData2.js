@@ -10,7 +10,8 @@ const coursesData = [
         duration: "6 months",
         schedule: routineeImg,
         regularPrice: 15000,
-        offerPrice: 13000
+        offerPrice: 13000,
+        note: "24 hour support"
     },
     {
         _id: "2", // Unique identifier
@@ -21,7 +22,8 @@ const coursesData = [
         duration: "4 months",
         schedule: routineeImg,
         regularPrice: 12000,
-        offerPrice: 11000
+        offerPrice: 11000,
+        note: "24 hour support"
     },
     {
         _id: "3", // Unique identifier
@@ -32,7 +34,8 @@ const coursesData = [
         duration: "5 months",
         schedule: routineeImg,
         regularPrice: 13000,
-        offerPrice: 11500
+        offerPrice: 11500,
+        note: "24 hour support"
     },
     {
         _id: "4", // Unique identifier
@@ -43,7 +46,8 @@ const coursesData = [
         duration: "3 months",
         schedule: routineeImg,
         regularPrice: 10000,
-        offerPrice: 8500
+        offerPrice: 8500,
+        note: "24 hour support"
     }
 ];
 

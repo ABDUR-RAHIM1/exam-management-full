@@ -1,5 +1,10 @@
-import Sidebar from "../components/dashboard/Sidebar";
+
 import "../globals.css";
+import DashboardSidebar from "./dashboard/dashboardComponent/DashboardSidebar";
+
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import Context from "../contextApi/Context";
 
 export const metadata = {
     title: "Dashboard Online-exam",
@@ -10,23 +15,26 @@ export default function DashboardLayout({ children }) {
     return (
         <html lang="en">
             <body className="bg-gray-100 text-gray-900">
-                <div className="flex h-screen overflow-hidden">
+                <Context>
+                    <ToastContainer />
+                    <div className="flex h-screen overflow-hidden">
 
-                    {/* Sidebar */}
-                    <aside className="w-[300px] overflow-y-auto bg-blue-900 text-white flex flex-col items-start p-4 space-y-6">
-                        <Sidebar />
-                    </aside>
+                        {/* Sidebar */}
+                        <aside className="w-[300px] overflow-y-auto bg-blue-900 text-white flex flex-col items-start p-4 space-y-6">
+                            <DashboardSidebar />
+                        </aside>
 
-                    {/* Main Content */}
-                    <main className="flex-1 overflow-y-auto p-8 bg-gray-100">
+                        {/* Main Content */}
+                        <main className="flex-1 overflow-y-auto p-8 bg-gray-100">
 
 
-                        {/* Children content */}
-                        <section className="mt-8">
-                            {children}
-                        </section>
-                    </main>
-                </div>
+                            {/* Children content */}
+                            <section className="mt-8">
+                                {children}
+                            </section>
+                        </main>
+                    </div>
+                </Context>
             </body>
         </html>
     );

@@ -1,15 +1,52 @@
 // courseModel.js
+
 import mongoose from 'mongoose';
 
 const courseSchema = new mongoose.Schema({
-    category: { type: String, required: true },
-    title: { type: String, required: true, unique: true },
-    description: { type: String, default: '' },
-    price: { type: Number, required: true },
-    duration: { type: Number, required: true },
-    startDate: { type: Date, required: true },
+    title: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    category: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    desc: {
+        type: String,
+        required: true
+    },
+    books: {
+        type: [String],
+        default: []
+    },
+    duration: {
+        type: String,
+        required: true
+    },
+    schedule: {
+        type: String,
+        required: true
+    },
+    regularPrice: {
+        type: Number,
+        required: true
+    },
+    offerPrice: {
+        type: Number,
+        required: true
+    },
+    note: {
+        type: [String],
+        required: false
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
 
-}, { timestamps: true });
+const Course = mongoose.model('Course', courseSchema);
 
-export default mongoose.model('Course', courseSchema);
-
+export default Course;

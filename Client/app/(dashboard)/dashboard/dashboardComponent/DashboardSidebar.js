@@ -9,15 +9,15 @@ const menuItems = [
         icon: <FaHome className="mr-3 text-lg" />,
         subItems: []
     },
-    {
-        name: "My Exams",
-        path: "/dashboard/exam",
-        icon: <FaUserGraduate className="mr-3 text-lg" />,
-        subItems: [
-            { name: "All Exams", path: "/dashboard/exam/all" },
-            { name: "Upcoming Exams", path: "/dashboard/exam/upcoming" }
-        ]
-    },
+    // {
+    //     name: "My Exams",
+    //     path: "/dashboard/exam",
+    //     icon: <FaUserGraduate className="mr-3 text-lg" />,
+    //     subItems: [
+    //         { name: "All Exams", path: "/dashboard/exam/all" },
+    //         { name: "Upcoming Exams", path: "/dashboard/exam/upcoming" }
+    //     ]
+    // },
     {
         name: "Questions",
         path: "/dashboard/questions",
@@ -29,6 +29,15 @@ const menuItems = [
         ]
     },
     {
+        name: "Courses",
+        path: "/dashboard/coures",
+        icon: <FaClipboardList className="mr-3 text-lg" />,
+        subItems: [
+            { name: "Create Course", path: "/dashboard/courses/add" },
+            { name: "All Course", path: "/dashboard/courses/all" },
+        ]
+    },
+    {
         name: "Results",
         path: "/dashboard/results",
         icon: <FaClipboardList className="mr-3 text-lg" />,
@@ -37,12 +46,12 @@ const menuItems = [
             { name: "Certificate", path: "/dashboard/results/certificate" }
         ]
     },
-    {
-        name: "Analytics",
-        path: "/dashboard/analytics",
-        icon: <FaChartBar className="mr-3 text-lg" />,
-        subItems: []
-    },
+    // {
+    //     name: "Analytics",
+    //     path: "/dashboard/analytics",
+    //     icon: <FaChartBar className="mr-3 text-lg" />,
+    //     subItems: []
+    // },
     {
         name: "Settings",
         path: "/dashboard/settings",
@@ -55,21 +64,21 @@ const menuItems = [
 ];
 
 
-export default function Sidebar() {
+export default function DashboardSidebar() {
     return (
-        <div className=" p-4">
+        <div className=" w-full ">
             <h2 className="text-2xl font-bold mb-8">Dashboard</h2>
             <nav className="flex flex-col w-full space-y-1">
                 {menuItems.map((item, index) => (
-                    <div key={index}>
-                        <Link href={item.path} className="w-full flex items-center py-3 px-4 rounded hover:bg-blue-700 transition duration-200">
+                    <div key={index} className=' w-full'>
+                        <Link href={item.path} className=" flex items-center gap-3 w-full py-2 px-3 rounded text-white hover:bg-blue-700 transition-colors duration-200 ">
                             {item.icon}
                             <span>{item.name}</span>
                         </Link>
                         {item.subItems.length > 0 && (
                             <div className="ml-8 mt-1">
                                 {item.subItems.map((subItem, subIndex) => (
-                                    <Link key={subIndex} href={subItem.path} className="w-full flex items-center py-2 px-4 text-sm rounded hover:bg-blue-600 transition duration-200">
+                                    <Link key={subIndex} href={subItem.path} className=" flex items-center gap-3 w-full py-2 px-3 rounded text-white hover:bg-blue-700 transition-colors duration-200 ">
                                         {subItem.name}
                                     </Link>
                                 ))}

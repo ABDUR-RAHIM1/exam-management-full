@@ -32,7 +32,7 @@ export default function useFileUploader() {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to upload image");
+                throw new Error("Failed to upload");
             }
 
             const data = await response.json();
@@ -40,13 +40,13 @@ export default function useFileUploader() {
 
             setImgUrl(uploadedUrl);
             setUploadResponse({
-                message: "Image uploaded successfully",
+                message: "uploaded successfully",
                 status: 200,
             });
         } catch (error) {
-            console.error("Error uploading image:", error);
+            console.error("Error uploading:", error);
             setUploadResponse({
-                message: "Failed to upload image",
+                message: "Failed to upload",
                 status: 500,
             });
         }

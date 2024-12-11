@@ -42,13 +42,13 @@ const createAdmin = async (req, res) => {
 
 
 const adminLogin = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     try {
-        // Check if admin exists
-        const admin = await adminAuthModel.findOne({ email });
+        // Check if admin with the provided email and role exists
+        const admin = await adminAuthModel.findOne({ email, role });
         if (!admin) {
-            return res.status(404).json({ message: "Admin not found" });
+            return res.status(404).json({ message: "Admin not found or role mismatch" });
         }
 
         // Compare password
