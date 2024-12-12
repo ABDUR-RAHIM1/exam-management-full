@@ -7,12 +7,14 @@ import Testimonial from '../components/Home/Testimonial/Testimonial'
 
 export default function HomePage() {
   return (
-    <div>
+    <div >
       <Slider />
       <Notice />
       <Services />
       <WhyChose />
       <Testimonial />
+
+
     </div>
   )
 }

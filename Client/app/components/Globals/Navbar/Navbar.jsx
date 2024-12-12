@@ -12,7 +12,6 @@ export default function MobileNavbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(null); // Track open dropdown
 
-
     const toggleDropdown = (dropdown) => {
         setOpenDropdown(openDropdown === dropdown ? null : dropdown);
     };
@@ -25,11 +24,11 @@ export default function MobileNavbar() {
     ];
 
     const dropdownItems = [
-        { item: "Bcs", path: "/services/bcs" },
-        { item: "Bank", path: "/services/bank" },
-        { item: "Govt", path: "/services/govt" },
-        { item: "Private", path: "/services/private" },
-        { item: "Interview", path: "/services/interview" },
+        { item: "Bcs", path: `/services/bcs` },
+        { item: "Bank", path: `/services/bank` },
+        { item: "Govt", path: "/services/ntrt" },
+        { item: "Private", path: "/services/ngo" },
+        { item: "Interview", path: "/services/etc" },
     ];
 
     const dropdownItems2 = [
@@ -82,7 +81,7 @@ export default function MobileNavbar() {
                     </Link>
                 ))}
 
-               
+
 
                 {/* Profile Section */}
                 <Link href={"/profile"} title="Profile" className="cursor-pointer">
@@ -134,7 +133,7 @@ export default function MobileNavbar() {
                         )}
                     </div>
 
-                   
+
 
                     {/* Profile Section */}
                     <Link href={"/profile"} title="Profile" className="cursor-pointer">

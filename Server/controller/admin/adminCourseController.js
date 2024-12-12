@@ -3,7 +3,7 @@
 import Course from "../../model/admin/adminCourseModel.js";
 
 
-// Create a new course
+// Create a new course (ok admin )
 const createCourse = async (req, res) => {
     try {
         // Check if a course with the same title (case-insensitive) already exists
@@ -34,7 +34,7 @@ const createCourse = async (req, res) => {
 };
 
 
-// Get all courses
+// Get all courses (ok admin / user)
 const getAllCourses = async (req, res) => {
     try {
         const courses = await Course.find().sort({ createdAt: -1 });
@@ -46,8 +46,9 @@ const getAllCourses = async (req, res) => {
 
 // Get a single course by ID
 const getCourseById = async (req, res) => {
+    const { id } = req.params;
     try {
-        const course = await Course.findById(req.params.id);
+        const course = await Course.findById(id);
         if (!course) {
             return res.status(404).json({ message: 'Course not found' });
         }
@@ -56,6 +57,36 @@ const getCourseById = async (req, res) => {
         res.status(500).json({ message: 'Error fetching course', error });
     }
 };
+
+
+// get course by Link (Category - such as /BCS)
+const getCourseByCategory = async (req, res) => {
+    const { item } = req.query;
+    console.log(item)
+    if (!item) {
+        return res.status(400).json({ message: 'Query parameter "item" is required' });
+    }
+
+    try {
+        const lowerCaseItem = item.toLowerCase();
+
+        const courses = await Course.find({
+            category: { $regex: new RegExp(`^${lowerCaseItem}$`, 'i') }, // Case-insensitive match
+        });
+
+        // If no courses found, send a message 
+        if (courses.length === 0) {
+            return res.status(404).json({ message: 'No courses found for this category' });
+        }
+
+        res.status(200).json(courses);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching course', error });
+    }
+};
+
+
+
 
 // Update a course by ID
 const updateCourse = async (req, res) => {
@@ -94,6 +125,7 @@ export {
     createCourse,
     getAllCourses,
     getCourseById,
+    getCourseByCategory,
     updateCourse,
     deleteCourse
 };

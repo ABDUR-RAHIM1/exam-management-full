@@ -2,9 +2,11 @@ import React from 'react';
 import CourseActions from './CourseActions';
 import EnrolBtn from './EnrolBtn';
 
+
+/// uses profile
 const CourseCard = (props) => {
     const { category, title, desc, books, duration, schedule, regularPrice, offerPrice, note } = props.courseData;
-
+    
     return (
         <div className="w-[31%] bg-white shadow-md rounded-lg overflow-hidden">
             <div className="p-6">
@@ -28,8 +30,15 @@ const CourseCard = (props) => {
                 </div>
 
                 {/* Note */}
-                <div className="my-5 bg-gray-200 py-3 px-2">
-                    <p>{note}</p>
+                <div className="my-5 bg-gray-200 py-3 px-1">
+                    <ul className='list-disc list-inside'>
+                        <h3 className=' font-bold my-2 italic'>বিঃদ্রঃ </h3>
+                        {
+                            note && note.map((n, i) => (
+                                <li key={i}>{n}</li>
+                            ))
+                        }
+                    </ul>
                 </div>
 
                 {/* Duration */}

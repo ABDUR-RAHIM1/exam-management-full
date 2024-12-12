@@ -28,3 +28,4 @@ export const getDataHandler = async (endpoint) => {
         return { response: null, result: { error: "An error occurred while fetching data" } };
     }
 };
+

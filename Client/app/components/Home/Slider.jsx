@@ -11,15 +11,15 @@ export default function Slider() {
 
     const slideImages = [
         {
-            url: "/Images/sl1.jpg",
+            url: "/Images/1.png",
             caption: "Bank Job Preparation"
         },
         {
-            url: "/Images/sl2.jpg",
+            url: "/Images/2.png",
             caption: " NTRC Job Preparation"
         },
         {
-            url: "/Images/sl3.jpg",
+            url: "/Images/3.png",
             caption: "BCS Job Preparation"
         }
     ];
