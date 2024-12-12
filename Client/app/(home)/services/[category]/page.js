@@ -29,7 +29,7 @@ export default async function ServicesCategory({ params }) {
             </div>
 
             {/* <Cart /> */}
-            <Cart bgColor='bg-red-500' textColor="text-red-600" />
+            <Cart bgColor='bg-red-500' textColor="text-white" />
 
         </div>
     )
