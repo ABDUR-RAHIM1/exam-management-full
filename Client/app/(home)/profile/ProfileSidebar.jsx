@@ -18,7 +18,8 @@ export default function ProfileSidebar(props) {
 
     const profileItems = [
         { name: "Profile Overview", path: "/profile" },
-        { name: "Course Lists", path: "/profile/course-lists" }, 
+        { name: "Course Lists", path: "/profile/course-lists" },
+        { name: "Upcoming Exam", path: "/profile/upcoming-exam" },
         { name: "My Exams", path: "/profile/my-exams" },
         // { name: "Upcoming Exams", path: "/profile/upcoming-exams" },
         // { name: "Certificates", path: "/profile/certificates" },

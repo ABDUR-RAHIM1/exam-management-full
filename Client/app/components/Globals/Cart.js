@@ -1,5 +1,7 @@
 "use client";
+import { postDataHandler } from "@/app/actions/users/postData";
 import { contextApi } from "@/app/contextApi/Context";
+import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -19,10 +21,9 @@ export default function Cart({ bgColor, textColor }) {
             setSelectedCourses(cart);
             const total = cart.reduce((acc, course) => acc + course.offerPrice, 0);
             setTotalPrice(total);
-        } else {
-            toast.warning("No Course Choosen!");
-        }
+        }  
     }, [cart]);
+
 
     const handleCreatePost = async () => {
         setLoading(true);
@@ -33,6 +34,7 @@ export default function Cart({ bgColor, textColor }) {
             };
             const postApi = "/user/purchase";
             const { status, result } = await postDataHandler(data, "POST", postApi);
+            console.log(result)
             if (status === 201) {
                 toast.success(result.message);
                 setCart([]);
@@ -88,7 +90,7 @@ export default function Cart({ bgColor, textColor }) {
                     {/* Hide Button */}
                     <button
                         onClick={toggleCartVisibility}
-                        className="absolute top-0 right-0 mt-[-10px] mr-[-10px] bg-red-600 text-white p-2 rounded-full hover:bg-red-700 shadow-lg"
+                        className="absolute top-0 right-0 mt-[-10px] mr-[-10px] text-2xl bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-700 shadow-lg"
                     >
                         ×
                     </button>
@@ -109,8 +111,10 @@ export default function Cart({ bgColor, textColor }) {
                                             Offer Price: ৳{course.offerPrice}
                                         </p>
                                     </div>
-                                    <img
-                                        src={course.schedule.src}
+                                    <Image
+                                        width={100}
+                                        height={100}
+                                        src={course.schedule}
                                         alt={course.title}
                                         className="w-12 h-12 rounded-lg"
                                     />
