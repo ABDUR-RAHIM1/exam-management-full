@@ -69,8 +69,7 @@ const RegistrationPage = () => {
 
                 if (isClick) { // Login case
                     // Cookies.set("userToken", result.token, { expires: 2 / 24 });
-                    Cookies.set("userToken", result.token);
-                    router.refresh()
+                    Cookies.set("userToken", result.token); 
                     router.push("/profile");
                 } else {
                     toast.info("Registration successful! Please log in.");
@@ -86,8 +85,7 @@ const RegistrationPage = () => {
             setLoading(false);
         }
     };
-    console.log(formData)
-
+ console.log(isClick)
     const { status, message } = uploadResponse; // form fileUploader hook
 
     const getStatusClass = (status) => {

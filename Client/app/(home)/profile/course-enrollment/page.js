@@ -1,9 +1,10 @@
 import { getDataHandler } from '@/app/actions/users/getData';
 import React from 'react';
 import PurcheseCard from '../profileComponent/PurchesCard.';
+import { purchaseCourseMe } from '@/app/constans/constans';
 
 export default async function CourseEnrolment() {
-    const { result } = await getDataHandler('/user/purchase/me');
+    const { result } = await getDataHandler(purchaseCourseMe);
 
     if (!result || result.length === 0) {
         return <p className='my-10 text-red-600'>No courses found!</p>;

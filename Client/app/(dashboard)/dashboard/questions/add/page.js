@@ -1,8 +1,27 @@
 "use client";
-import React, { useState } from "react";
+import { publicCourseGet } from "@/app/constans/constans";
+import useClientDataHandler from "@/app/Handler/usersHandler/useClientDataHandler";
+import React, { useEffect, useState } from "react";
 
 export default function AddQuestion() {
+    const getClientDataHandler = useClientDataHandler();
+    const [courseData, setCourseData] = useState(null)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getClientDataHandler(publicCourseGet); 
+            setCourseData(data)
+        };
+
+        fetchData();
+    }, []);
+
     const [questionData, setQuestionData] = useState({
+        questionCategory: "",
+        questionTitle: "",
+        questionId: "",
+        examDate: "",
+        examTime: "",
         sl: 1,
         qus: "",
         opt: "",
@@ -10,6 +29,7 @@ export default function AddQuestion() {
     });
 
     const [data, setData] = useState({ category: "", questions: [] });
+    console.log(data)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,31 +50,51 @@ export default function AddQuestion() {
         setQuestionData({ sl: questionData.sl + 1, qus: "", opt: "", ans: "" });
     };
 
-    const handleCategoryChange = (e) => {
-        setData((prevData) => ({
-            ...prevData,
-            category: e.target.value
-        }));
-    };
 
+   
     const handleSubmitPaper = () => {
         // Submit functionality can be implemented here
         console.log("Final Question Paper:", data);
         alert("Question paper submitted!");
     };
 
+    const [title, setTitle] = useState("")
+    useEffect(() => {
+        const filterByTitle = courseData?.find(f1 => f1.title.toLocaleLowerCase() === title.toLocaleLowerCase())
+
+        setQuestionData({
+            ...questionData,
+            questionCategory: filterByTitle?.category,
+            questionTitle: filterByTitle?.title,
+            questionId: filterByTitle?._id,
+        })
+    }, [title])
+   
     return (
         <div className="w-[80%] mx-auto">
             <div className="p-4 bg-white rounded-md shadow-md my-10">
-                <h2 className="text-2xl font-semibold mb-4">Question Category</h2>
-                <input
-                    type="text"
-                    name="category"
-                    value={data.category}
-                    onChange={handleCategoryChange}
-                    placeholder="Enter the question category"
-                    className="mt-1 p-2 border rounded w-full"
-                />
+                <div className="my-3">
+                    <h2 className="my-2 font-bold">Question Category</h2>
+                    <select onChange={(e) => setTitle(e.target.value)} name="questionTitle" className="input">
+                        {courseData && courseData.map((c, index) => (
+                            <option key={index} value={c.title}>{c.title}</option>
+                        ))}
+                    </select>
+                </div>
+
+         
+
+                <div className="my-3">
+                    <h2 className="my-2 font-bold">Exam Date</h2>
+                    <input onChange={handleChange} type="date" name="examDate" value={questionData.examDate} className="input" />
+                </div>
+                <div className="my-3">
+                    <h2 className="my-2 font-bold">Exam Time</h2>
+                    <input onChange={handleChange} type="time" name="examTime" value={questionData.examTime} className="input" />
+                </div>
+
+
+
             </div>
 
             <div className="bg-white p-4 rounded-md shadow-md my-6">

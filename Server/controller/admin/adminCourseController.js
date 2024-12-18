@@ -61,8 +61,7 @@ const getCourseById = async (req, res) => {
 
 // get course by Link (Category - such as /BCS)
 const getCourseByCategory = async (req, res) => {
-    const { item } = req.query;
-    console.log(item)
+    const { item } = req.query; 
     if (!item) {
         return res.status(400).json({ message: 'Query parameter "item" is required' });
     }

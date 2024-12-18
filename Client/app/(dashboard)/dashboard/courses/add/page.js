@@ -13,6 +13,8 @@ export default function CourseAddPage() {
     const { status, message } = uploadResponse;
 
     const isUpdateData = manageData && Object.keys(manageData).length > 0
+    const isRequired = isUpdateData ? false : true
+
 
     const [formData, setFormData] = useState({
         category: '',
@@ -26,6 +28,8 @@ export default function CourseAddPage() {
         note: ''
     });
 
+
+    // handle change
     const handleChange = async (e) => {
         const { name, value, type, files } = e.target;
         if (type === "file") {
@@ -34,7 +38,9 @@ export default function CourseAddPage() {
         }
         setFormData({ ...formData, [name]: value });
     };
+console.log(formData)
 
+    // image url set in formData state
     useEffect(() => {
         if (imgUrl) {
             setFormData({ ...formData, schedule: imgUrl })
@@ -60,7 +66,12 @@ export default function CourseAddPage() {
                 books: booksArr,
                 note: noteArr
             }
-            console.log(data)
+console.log(data)
+            if (isUpdateData) {
+                alert("APi Not connect for Edit ")
+                 return
+            }
+
             const { status, result } = await postDataHandler(data, "POST", adminCreateCourse);
 
             if (status === 201) {
@@ -102,7 +113,7 @@ export default function CourseAddPage() {
                             name="category"
                             value={formData.category}
                             onChange={handleChange}
-                            required
+                            required={isRequired}
                             placeholder="Enter course category"
                             className="input"
                         />
@@ -117,7 +128,7 @@ export default function CourseAddPage() {
                             name="title"
                             value={formData.title}
                             onChange={handleChange}
-                            required
+                            required={isRequired}
                             placeholder="Enter course title"
                             className="input"
                         />
@@ -131,7 +142,7 @@ export default function CourseAddPage() {
                             name="desc"
                             value={formData.desc}
                             onChange={handleChange}
-                            required
+                            required={isRequired}
                             rows={5}
                             placeholder="Enter course description"
                             className="input"
@@ -147,7 +158,7 @@ export default function CourseAddPage() {
                             name="books"
                             value={formData.books}
                             onChange={handleChange}
-                            required
+                            required={isRequired}
                             placeholder="Enter books (comma separated)"
                             className="input"
                         />
@@ -162,7 +173,7 @@ export default function CourseAddPage() {
                             name="duration"
                             value={formData.duration}
                             onChange={handleChange}
-                            required
+                            required={isRequired}
                             placeholder="Enter duration (e.g., 3 months)"
                             className="input"
                         />
@@ -176,7 +187,7 @@ export default function CourseAddPage() {
                         <input
                             id="file"
                             type="file"
-                            required
+                            required={isRequired}
                             onChange={handleChange}
                             className="input"
                         />
@@ -192,7 +203,7 @@ export default function CourseAddPage() {
                             value={formData.regularPrice}
                             onChange={handleChange}
                             placeholder="Enter regular price"
-                            required
+                            required={isRequired}
                             className="input"
                         />
                     </div>
@@ -206,6 +217,7 @@ export default function CourseAddPage() {
                             name="offerPrice"
                             value={formData.offerPrice}
                             onChange={handleChange}
+                            required={isRequired}
                             placeholder="Enter offer price"
                             className="input"
                         />
@@ -220,7 +232,7 @@ export default function CourseAddPage() {
                             name="note"
                             value={formData.note}
                             onChange={handleChange}
-                            required
+                            required={isRequired}
                             placeholder="Enter additional notes"
                             className="input"
                         />

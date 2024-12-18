@@ -1,9 +1,12 @@
 "use client";
+import { deleteHandler } from '@/app/actions/users/deleteHandler';
+import { courseDelete } from '@/app/constans/constans';
 import { contextApi } from '@/app/contextApi/Context';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
+import { toast } from 'react-toastify';
 
 export default function CourseTable({ courseData }) {
     const { setManageData } = useContext(contextApi);
@@ -11,7 +14,7 @@ export default function CourseTable({ courseData }) {
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setIsMounted(true);  
+        setIsMounted(true);
     }, []);
 
     const onEdit = (data) => {
@@ -19,8 +22,20 @@ export default function CourseTable({ courseData }) {
         router.push("/dashboard/courses/add");
     };
 
-    const onDelete = (data) => {
+    const onDelete = async (data) => {
         console.log("Deleting:", data); // Add delete logic
+
+        try {
+            const deleleApi = `${courseDelete + data._id}`
+            const { status, result } = await deleteHandler(deleleApi);
+            if (status === 200) {
+                toast.success(result.message)
+                router.refresh()
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error("Somthing Wrong!")
+        }
     };
 
     const columns = [
@@ -43,7 +58,9 @@ export default function CourseTable({ courseData }) {
         },
         {
             name: 'Description',
-            selector: row => row.desc,
+            selector: row => <p>
+                {row.desc && row.desc.length > 30 ? row.desc.slice(0, 30) : row.desc}
+            </p>,
             sortable: false,
         },
         {
@@ -62,15 +79,23 @@ export default function CourseTable({ courseData }) {
             sortable: true,
         },
         {
-            name: 'Actions',
+            name: ' Edit',
             cell: row => (
-                <div className="flex gap-2">
+                <div className="flex gap-2 bg-red-500">
                     <button
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                         onClick={() => onEdit(row)}
                     >
                         Edit
                     </button>
+                </div>
+            ),
+        },
+
+        {
+            name: ' Delete',
+            cell: row => (
+                <div className="flex gap-2 bg-red-500">
                     <button
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                         onClick={() => onDelete(row)}

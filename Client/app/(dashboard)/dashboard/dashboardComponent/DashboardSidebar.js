@@ -25,7 +25,7 @@ const menuItems = [
         subItems: [
             { name: "All Questions", path: "/dashboard/questions/all" },
             { name: "Add Question", path: "/dashboard/questions/add" },
-            { name: "Question Bank", path: "/dashboard/questions/bank" }
+            // { name: "Question Bank", path: "/dashboard/questions/bank" }
         ]
     },
     {
@@ -35,6 +35,7 @@ const menuItems = [
         subItems: [
             { name: "Create Course", path: "/dashboard/courses/add" },
             { name: "All Course", path: "/dashboard/courses/all" },
+            { name: "Purchase", path: "/dashboard/courses/purchase" },
         ]
     },
     {
