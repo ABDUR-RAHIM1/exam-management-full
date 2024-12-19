@@ -8,6 +8,7 @@ import blogRouter from './route/users/blogRoute.js';
 import purchesRouter from './route/users/purchaseRoute.js';
 import adminRouter from './route/admin/adminAuthRoute.js';
 import courseRouter from './route/admin/adminCourseRoute.js';
+import questionRouter from './route/admin/adminQuestionRoute.js';
 
 dotenv.config();
 
@@ -37,6 +38,10 @@ app.use("/api/user", purchesRouter)
 app.use("/api/admin/auth", adminRouter);
 
 app.use("/api/admin/course", courseRouter)
+app.use("/api/admin/question", questionRouter)
+
+
+
 
 // Handle undefined routes
 app.use((req, res, next) => {
