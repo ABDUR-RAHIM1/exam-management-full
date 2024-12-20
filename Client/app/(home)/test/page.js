@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { FaCheck } from "react-icons/fa";
+import { MdClose } from "react-icons/md";
 
 
 
@@ -177,27 +179,38 @@ export default function Test() {
                             resultData.questions.map((q, i) => (
                                 <div key={i} className="bg-gray-200 p-3 my-4 rounded-md">
                                     <h2 className="text-2xl">{q.questionText}</h2>
-                                    <ul className=" list-disc list-inside">
+                                    <ul className=" list-disc list-inside space-y-2 my-5">
                                         {
                                             // q.options.map((o, i2) => (
                                             //     <li key={i2} className={`${o === q.selectedAns ? "text-green-700 font-bold" :"text-black"}`}>{o}</li>
                                             // ))
                                             q.options.map((o, i2) => (
-                                                <li key={i2} className={`${o === q.selectedAns ?
-                                                    q.selectedAns === q.correctAnswer ? "text-green-500" :
-                                                        "text-red-500" : ""}`}>{o}</li>
+                                                <div key={i2} className=" flex items-center">
+                                                    <strong className={`${o === q.selectedAns ?
+                                                        q.selectedAns === q.correctAnswer ? "bg-blue-500 px-2 py-1 text-white" :
+                                                            "bg-red-500 px-2 py-1 text-white" : ""} ${o === q.correctAnswer ? "bg-blue-500 px-2 py-1 text-white" : ""}`}>{o}</strong>
+                                                    <span className=" mx-1">
+                                                        {o === q.selectedAns ?
+                                                            q.selectedAns === q.correctAnswer ? <span className=" text-2xl text-green-500">
+                                                                <FaCheck />
+                                                            </span>
+                                                                :
+                                                                <span className=" text-2xl text-red-500">  <MdClose /></span> : ""}
+                                                    </span>
+                                                </div>
                                             ))
                                         }
                                     </ul>
-                                    <div className=" bg-gray-300 p-3 my-2">
-                                        <div> <span className=" font-bold mx-2">Your Ans : </span>
-                                            <span className={`${q.isCorrect ? "text-green-700" : "text-red-500"}`}>{q.selectedAns}</span>
-                                        </div>
-                                        {!q.isCorrect && <div> <span className=" font-bold mx-2">Correct Ans : </span>
-                                            <span className=" text-blue-700 font-bold">
-                                                {q.correctAnswer}
-                                            </span></div>}
-                                    </div>
+                                    {/*  description page */}
+                                    {/* <div className=" bg-gray-300 p-3 my-2">
+                <div> <span className=" font-bold mx-2">Your Ans : </span>
+                    <span className={`${q.isCorrect ? "text-green-700" : "text-red-500"}`}>{q.selectedAns}</span>
+                </div>
+                {!q.isCorrect && <div> <span className=" font-bold mx-2">Correct Ans : </span>
+                    <span className=" text-blue-700 font-bold">
+                        {q.correctAnswer}
+                    </span></div>}
+            </div> */}
                                 </div>
                             ))
                         }
