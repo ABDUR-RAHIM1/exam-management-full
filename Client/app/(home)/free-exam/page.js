@@ -27,25 +27,42 @@ function ExamPage() {
             alert("Please answer all questions before submitting.");
             return;
         }
-    
+
         // Validate answers
         const results = questions.map((question, index) => {
             const selectedAnswer = answers[index]; // Get selected answer
             const isCorrect = question.answer === selectedAnswer; // Check if the selected answer is correct
             return {
-                question: question.questionText,
+                questionId: index, // Use unique question ID
+                questionText: question.questionText,
                 selectedAnswer, // Include the selected answer value
                 isCorrect,
             };
         });
-    
-        console.log(results);
-    
+ 
+
         const correctCount = results.filter((result) => result.isCorrect).length;
-        // setResults(results); // Save results to state
+
         alert(`You got ${correctCount} out of ${questions.length} correct!`);
+        const positiveScore = correctCount
+        const nagetiveScore = questions.length - correctCount
+
+        // console.log(positiveScore, nagetiveScore)
+
+        // Prepare the data to send to the backend
+        const examData = {
+            userId: "user123", // Replace with dynamic user ID
+            examId: "exam456", // Replace with dynamic exam ID
+            answers: results,
+            positiveScore,
+            nagetiveScore,
+            score: questions.length - correctCount,
+        };
+
+        console.log(examData)
+
     };
-    
+
 
     if (data === null) {
         return <p className="text-center mt-4">Loading questions...</p>;
