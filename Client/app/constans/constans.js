@@ -18,6 +18,12 @@ const questionGetAll = "/admin/question/all"
 const questionDetailsById = "/admin/question/details/"
 const questionDelete = "/admin/question/delete/"
 
+
+// result / questions
+const getResultMe = "/results/get/me"
+const getResultById = "/results/get/"
+
+
 export {
     // public start
     publicCourseGet,
@@ -35,5 +41,9 @@ export {
     questionGetAll,
     questionDetailsById,
     questionDelete,
+
+
+    /// results / questions
+    getResultMe, getResultById
 
 }

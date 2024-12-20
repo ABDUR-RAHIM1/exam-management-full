@@ -3,7 +3,7 @@ import QuestionModel from "../../model/admin/adminQustionModel.js";
 const createQuestion = async (req, res) => {
     try {
         const { questionCategory, questionTitle, course, examDate, examTime, questions } = req.body;
-      console.log(req.body)
+        
         // Validation
         if (!questionCategory || !questionTitle || !course || !examDate || !examTime || !questions || questions.length === 0) {
             return res.status(400).json({ message: "All fields are required!" });

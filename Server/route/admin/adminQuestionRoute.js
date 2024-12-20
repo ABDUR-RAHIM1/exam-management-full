@@ -5,7 +5,7 @@ const router = express.Router();
 // Routes
 router.post('/add', createQuestion); // ok
 router.get('/all', getAllQuestion);  // ok (admin) due for user
-router.get('/details/:id', getQuestionById);
+router.get('/details/:id', getQuestionById); // ok
 router.put('/update/:id', updateQuestion);
 router.delete('/delete/:id', deleteQuestion);  // ok 
 

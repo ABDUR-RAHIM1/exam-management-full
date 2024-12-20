@@ -8,7 +8,7 @@ import Marque from '../components/Home/Marque'
 
 export default function HomePage() {
   return (
-    <div >
+    <div className='bgGradient' >
       <Slider />
       <Marque />
       <Notice />

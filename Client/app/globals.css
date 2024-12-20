@@ -32,6 +32,9 @@ body {
 
 
   /*  common css */
+  .bgGradient {
+    @apply bg-gradient-to-r from-blue-100 to-purple-100
+  }
   .label{
     @apply block text-gray-600 mb-2 font-semibold
   }

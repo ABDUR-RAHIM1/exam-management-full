@@ -1,60 +1,150 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
+import { postDataHandler } from "@/app/actions/users/postData";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
-function UpcomingExam() {
-    const [answers, setAnswers] = useState(Array(40).fill(null));
+/// exam page -> shedule by shedule 
+function UpcomingExamPage() {
+    const [formData, setFormData] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    const handleAnswerChange = (index, selectedAnswer) => {
-        const updatedAnswers = [...answers];
-        updatedAnswers[index] = selectedAnswer;
-        setAnswers(updatedAnswers);
+    useEffect(() => {
+        fetch("http://localhost:8500/api/admin/question/details/67653349d19f9501c7509103")
+            .then((res) => res.json())
+            .then((data) => {
+                setFormData(data);
+            })
+            .catch((err) => console.error("Error fetching questions:", err));
+    }, []);
+
+
+    const handleChange = (selectedAns, questionId) => {
+        const updatedQuestions = formData.questions.map((q) =>
+            q.questionId === questionId ? { ...q, selectedAns } : q
+        );
+
+        // Update formData with the new questions array
+        setFormData({ ...formData, questions: updatedQuestions });
+    }
+
+
+    const handleQuestionSubmit = async () => {
+
+        // Prepare the result data to send to the server
+        setLoading(true)
+        const result = formData.questions.map(q => ({
+            questionId: q.questionId,
+            questionText: q.questionText,
+            options: q.options,
+            selectedAns: q.selectedAns,
+            correctAnswer: q.answer,
+            isCorrect: q.selectedAns === q.answer
+        }));
+
+        // Calculate right and wrong answers
+        const rightAnswers = result.filter(item => item.isCorrect).length;
+        const wrongAnswers = result.length - rightAnswers;
+
+        const resultData = {
+            questionCategory: formData.questionCategory,
+            questionTitle: formData.questionTitle,
+            courseId: formData.course,
+            // examDate: formData.examDate,
+            // examTime: formData.examTime,
+            questions: result,// Sending all question data with answers and correctness
+            rightAnswers: rightAnswers, // Total correct answers
+            wrongAnswers: wrongAnswers // Total wrong answers
+        };
+
+        try {
+            const { status, result } = await postDataHandler(resultData, "POST", "/results/submit_question")
+
+            if (status === 201) {
+                toast.success(result.message)
+            } else {
+                toast.error(result.message)
+            }
+        } catch (error) {
+            console.error('Error saving result:', error);
+            alert('Error saving result');
+        } finally {
+            setLoading(false)
+        }
     };
-console.log(answers)
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("User Answers:", answers);
-        // Handle submission logic here
-    };
 
-    // Static mock question, will later be replaced with dynamic data
-    const questions = Array.from({ length: 40 }, (_, index) => ({
-        id: index + 1,
-        text: `BCS Question ${index + 1}`,
-        options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
-    }));
+
+    if (formData === null) {
+        return <p className="text-center mt-4">Loading questions...</p>;
+    }
+
 
 
     return (
-        <div className="max-w-4xl mx-auto p-8">
-            <h2 className="text-2xl font-bold text-center mb-6">BCS Exam - 40 Questions</h2>
-            <p className=' text-center my-5 text-lg'>Date : {new Date().toLocaleDateString()}</p>
-            <form onSubmit={handleSubmit}>
-                {questions.map((question, index) => (
-                    <div key={question.id} className="mb-6 p-4 bg-gray-100 rounded-md shadow-md">
-                        <p className="text-lg font-semibold mb-2">{`${index + 1}. ${question.text}`}</p>
-                        <div className="space-y-2">
-                            {question.options.map((option, optIndex) => (
-                                <label key={optIndex} className="block">
-                                    <input
-                                        type="radio"
-                                        name={`question-${index}`}
-                                        value={option}
-                                        checked={answers[index] === option}
-                                        onChange={() => handleAnswerChange(index, option)}
-                                        className="mr-2"
-                                    />
-                                    {option}
-                                </label>
-                            ))}
-                        </div>
-                    </div>
-                ))}
-                <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-md mt-4 hover:bg-blue-700">
-                    Submit Exam
+        <div className="p-6 bgGradient min-h-screen flex items-center justify-center">
+            <div className="bg-white shadow-lg rounded-lg p-8 max-w-4xl w-full">
+                <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
+                    Question Paper
+                </h1>
+                <div className="border-b-2 pb-4 mb-8 text-gray-700">
+                    <p className="mb-2">
+                        <span className="font-semibold">Category:</span> {formData.questionCategory}
+                    </p>
+                    <p className="mb-2">
+                        <span className="font-semibold">Course:</span> {formData.questionTitle}
+                    </p>
+                    <p className="mb-2">
+                        <span className="font-semibold">Exam Date:</span>{" "}
+                        {new Date(formData.examDate).toLocaleDateString("en-US")}
+                    </p>
+                    <p className="mb-2">
+                        <span className="font-semibold">Exam Time:</span> {formData.examTime}
+                    </p>
+                </div>
+
+                <div>
+                    {formData !== null &&
+                        formData.questions.map((item, index) => (
+                            <div
+                                key={index}
+                                className="my-6 p-5 bg-gray-50 border-l-4 border-blue-500 rounded-md shadow-sm"
+                            >
+                                <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                                    <span className="text-blue-500">{index + 1}.</span> {item.questionText}
+                                </h2>
+                                <div className="space-y-2">
+                                    {item.options.map((o, idx) => (
+                                        <div key={idx} className="flex items-center">
+                                            <input
+                                                type="radio"
+                                                name={item.questionId}
+                                                value={o}
+                                                id={`${item.questionId}-${idx}`}
+                                                className="w-5 h-5 text-blue-600 focus:ring-blue-500 border-gray-300"
+                                                onChange={(e) => handleChange(e.target.value, item.questionId)}
+                                            />
+                                            <label
+                                                htmlFor={`${item.questionId}-${idx}`}
+                                                className="ml-3 text-gray-700"
+                                            >
+                                                {o}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                </div>
+
+                <button
+                    onClick={handleQuestionSubmit}
+                    className="mt-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 w-full"
+                >
+                    {loading ? "Loading . . . " : "Submit Answer"}
                 </button>
-            </form>
+            </div>
         </div>
     );
+
 }
 
-export default UpcomingExam;
+export default UpcomingExamPage;
