@@ -81,7 +81,6 @@ const adminLogin = async (req, res) => {
 const getallAdmins = async (req, res) => {
     try {
         const { adminId, role } = req;
-        console.log(adminId)
 
         const admins = await adminAuthModel.find().select("-password");
         res.status(200).json(admins)

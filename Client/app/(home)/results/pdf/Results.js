@@ -1,7 +1,7 @@
 "use client"
-import React from 'react'
-import { ResultsPDF } from './ResultsPDF '
-import { PDFViewer } from '@react-pdf/renderer'
+import React from 'react' 
+import { PDFViewer } from '@react-pdf/renderer' 
+import ResultsPDF from './ResultsPDF '
 
 export default function Results({ result }) {
     return (

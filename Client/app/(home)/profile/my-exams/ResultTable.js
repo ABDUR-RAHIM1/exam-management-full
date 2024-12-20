@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
+import { MdDownload } from 'react-icons/md'
 
 export default function ResultTable({ data }) {
     const [isClient, setIsClient] = useState(true)
@@ -22,9 +23,11 @@ export default function ResultTable({ data }) {
         {
             name: "isComplete",
             selector: row => row.isComplete,
-            cell: row => <span>
-                {row.isComplete}
-            </span>,
+            cell: row => (
+                <span className={`${row.isComplete ? "bg-green-600": "bg-red-600"} p-1 text-white`}>
+                    {row.isComplete ? "Yes" : "No"}
+                </span>
+            ),
         },
         {
             name: "Right A",
@@ -39,9 +42,15 @@ export default function ResultTable({ data }) {
             selector: row => row.wrongAnswers + row.rightAnswers
         },
         {
-            name: "Download",
-            selector: row => <Link href={`/results/${row._id}`} className=' inline-block py-2 px-3 bg-blue-500 text-white rounded-md font-bold'>
+            name: "View",
+            selector: row => <Link href={`/results/${row._id}`} className=' inline-block py-2 px-3 bg-blue-700 text-white rounded-md font-bold'>
                 Details
+            </Link>
+        },
+        {
+            name: "Download",
+            selector: row => <Link href={`/results/pdf/${row._id}`} className=' flex items-center gap-1 py-2 px-3 bg-blue-500 text-white rounded-md font-bold'>
+                PDF <MdDownload className=' text-xl' />
             </Link>
         },
     ]

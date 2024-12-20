@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
 // PDF Styles
 const styles = StyleSheet.create({
@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: '#333',
+        textAlign :"center",
+        margin :"10px"
     },
     summary: {
         marginVertical: 10,
@@ -55,17 +57,65 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         color: '#000',
     },
+    logoContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    logo: {
+        width: 50,
+        height: 50,
+        borderRadius: '50%',
+        marginRight: 15,
+    },
+    mainTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#1D4ED8', // Blue color
+    },
+    examSummary: {
+        backgroundColor: '#EFF6FF', // Light blue background
+        color: '#2563EB', // Blue text
+        padding: 8,
+        borderRadius: 8,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        marginTop: 10,
+    },
 });
 
-// PDF Design Component
-export const ResultsPDF = ({ result }) => (
+// PDF Design Component (used -> results page)
+const ResultsPDF = ({ result }) => (
     <Document>
         <Page size="A4" style={styles.page}>
             {/* Header */}
             <View style={styles.header}>
-                <Text style={styles.title}>{result.questionCategory}</Text>
-                <Text>{result.questionTitle}</Text>
-                <Text>📅 {result.examDate} | ⏰ {result.examTime}</Text>
+                {/* Website Name and Logo */}
+                <View style={styles.logoContainer}>
+                    <Image
+                        src="https://placehold.co/600x400/png"
+                        style={styles.logo}
+                        alt="TickMarkQ Logo"
+                    />
+                    <Text style={styles.mainTitle}>TickMarkQ</Text>
+                </View>
+                <Text style={{ fontSize: 10, fontStyle: 'italic', color: '#6B7280' }}>
+                    Empowering Knowledge, One Question at a Time
+                </Text>
+
+                {/* Title and Category */}
+                <Text style={styles.title}>Result Sheet</Text>
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#4B5563' }}>
+                    Category: {result.questionCategory}
+                </Text>
+                <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 5 }}>
+                    Course: {result.questionTitle}
+                </Text>
+
+                {/* Exam Summary */}
+                <View style={styles.examSummary}>
+                    <Text>Exam Summary</Text>
+                </View>
             </View>
 
             {/* Summary */}
@@ -101,3 +151,5 @@ export const ResultsPDF = ({ result }) => (
         </Page>
     </Document>
 );
+
+export default ResultsPDF;

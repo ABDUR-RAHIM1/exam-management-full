@@ -26,7 +26,6 @@ const createQuestion = async (req, res) => {
             data: savedData,
         });
     } catch (error) {
-        console.log(error)
         return res.status(500).json({ 
             message: "Failed to add question data",
             error: error.message,
@@ -50,8 +49,6 @@ const getAllQuestion = async (req, res) => {
 const getQuestionById = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id)
-
         const questionData = await QuestionModel.findById(id);
 
         if (!questionData) {
