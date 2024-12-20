@@ -4,14 +4,22 @@ import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import { MdDownload } from 'react-icons/md'
 
-export default function ResultTable({ data }) {
-    const [isClient, setIsClient] = useState(true)
+export default function ResultsTable({ data }) {
+    const [resultData, setResultData] = useState(null)
+
     useEffect(() => {
-        setIsClient(!isClient)
+        setResultData(data)
     }, [])
-    console.log(data)
+
+    if (resultData === null) {
+        return "Loading . . ."
+    }
 
     const columns = [
+        {
+            name: "Name",
+            selector: row => row.user?.name
+        },
         {
             name: "Category",
             selector: row => row.questionCategory
@@ -19,15 +27,6 @@ export default function ResultTable({ data }) {
         {
             name: "Course",
             selector: row => row.questionTitle
-        },
-        {
-            name: "isComplete",
-            selector: row => row.isComplete,
-            cell: row => (
-                <span className={`${row.isComplete ? "bg-green-600" : "bg-red-600"} p-1 text-white`}>
-                    {row.isComplete ? "Yes" : "No"}
-                </span>
-            ),
         },
         {
             name: "Right A",
@@ -46,6 +45,14 @@ export default function ResultTable({ data }) {
             selector: row => row.totalMark ? row.totalMark : "N/A"
         },
         {
+            name: "Complete",
+            selector: row => <span className={`${row.isComplete ? "bg-green-500" : " bg-red-500"} p-1 text-white`}>
+                {
+                    row.isComplete ? "Yes" : "No"
+                }
+            </span>
+        },
+        {
             name: "View",
             selector: row => <Link href={`/results/${row._id}`} className=' inline-block py-2 px-3 bg-blue-700 text-white rounded-md font-bold'>
                 Details
@@ -58,16 +65,12 @@ export default function ResultTable({ data }) {
             </Link>
         },
     ]
-
-    if (isClient) {
-        return "Loading . . . "
-    }
     return (
         <div className="p-4 bg-white rounded shadow-md">
-            <h2 className="text-xl font-bold mb-4">Results</h2>
+            <h2 className="text-xl font-bold mb-4">All Results</h2>
             <DataTable
                 columns={columns}
-                data={data}
+                data={resultData}
                 pagination
                 highlightOnHover
                 striped

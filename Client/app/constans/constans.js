@@ -20,6 +20,7 @@ const questionDelete = "/admin/question/delete/"
 
 
 // result / questions
+const getResultAll = "/results/get/all"
 const getResultMe = "/results/get/me"
 const getResultById = "/results/get/"
 
@@ -44,6 +45,6 @@ export {
 
 
     /// results / questions
-    getResultMe, getResultById
+    getResultAll, getResultMe, getResultById
 
 }

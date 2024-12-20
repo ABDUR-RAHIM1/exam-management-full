@@ -9,9 +9,10 @@ function UpcomingExamPage() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetch("http://localhost:8500/api/admin/question/details/67653349d19f9501c7509103")
+        fetch("http://localhost:8500/api/admin/question/details/676533d3d19f9501c7509108")
             .then((res) => res.json())
             .then((data) => {
+                console.log(data)
                 setFormData(data);
             })
             .catch((err) => console.error("Error fetching questions:", err));
@@ -44,16 +45,18 @@ function UpcomingExamPage() {
         // Calculate right and wrong answers
         const rightAnswers = result.filter(item => item.isCorrect).length;
         const wrongAnswers = result.length - rightAnswers;
+        const plusMark = 1 * rightAnswers
+        const minusMark = 0.25 * wrongAnswers
+        const totalMark = plusMark - minusMark;
 
         const resultData = {
             questionCategory: formData.questionCategory,
             questionTitle: formData.questionTitle,
             courseId: formData.course,
-            // examDate: formData.examDate,
-            // examTime: formData.examTime,
             questions: result,// Sending all question data with answers and correctness
             rightAnswers: rightAnswers, // Total correct answers
-            wrongAnswers: wrongAnswers // Total wrong answers
+            wrongAnswers: wrongAnswers, // Total wrong answers
+            totalMark: totalMark
         };
 
         try {

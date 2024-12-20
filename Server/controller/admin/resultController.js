@@ -14,8 +14,8 @@ const submitQuestionAndMakeResult = async (req, res) => {
 
         // Check if a submission already exists for the user, course, and title
         const existingResult = await ResultModel.findOne({
-            user: userId,
-            courseId,
+            // user: userId,
+            // courseId,
             questionTitle,
             isComplete: true
         });

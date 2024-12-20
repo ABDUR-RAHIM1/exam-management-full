@@ -43,7 +43,7 @@ const menuItems = [
         path: "/dashboard/results",
         icon: <FaClipboardList className="mr-3 text-lg" />,
         subItems: [
-            { name: "Exam Results", path: "/dashboard/results/exam" },
+            { name: "Exam Results", path: "/dashboard/exam-results" },
             { name: "Certificate", path: "/dashboard/results/certificate" }
         ]
     },
