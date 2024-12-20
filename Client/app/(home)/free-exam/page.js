@@ -2,80 +2,29 @@
 import React, { useState, useEffect } from "react";
 
 function ExamPage() {
-    const [answers, setAnswers] = useState([]);
-    const [data, setData] = useState(null);
+    const [formData, setFormData] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:8500/api/admin/question/details/676440351b847bfe93d9c907")
+        fetch("http://localhost:8500/api/admin/question/details/67653344d19f9501c7509101")
             .then((res) => res.json())
             .then((data) => {
-                setData(data);
-                setAnswers(Array(data.questions.length).fill(null)); // Initialize answers
+                setFormData(data);
             })
             .catch((err) => console.error("Error fetching questions:", err));
     }, []);
 
-    const handleAnswerChange = (questionIndex, selectedAnswer) => {
-        const updatedAnswers = [...answers];
-        updatedAnswers[questionIndex] = selectedAnswer;
-        setAnswers(updatedAnswers);
-    };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (answers.includes(null)) {
-            alert("Please answer all questions before submitting.");
-            return;
-        }
-
-        // Validate answers
-        const results = questions.map((question, index) => {
-            const selectedAnswer = answers[index]; // Get selected answer
-            const isCorrect = question.answer === selectedAnswer; // Check if the selected answer is correct
-            return {
-                questionId: index, // Use unique question ID
-                questionText: question.questionText,
-                selectedAnswer, // Include the selected answer value
-                isCorrect,
-            };
-        });
- 
-
-        const correctCount = results.filter((result) => result.isCorrect).length;
-
-        alert(`You got ${correctCount} out of ${questions.length} correct!`);
-        const positiveScore = correctCount
-        const nagetiveScore = questions.length - correctCount
-
-        // console.log(positiveScore, nagetiveScore)
-
-        // Prepare the data to send to the backend
-        const examData = {
-            userId: "user123", // Replace with dynamic user ID
-            examId: "exam456", // Replace with dynamic exam ID
-            answers: results,
-            positiveScore,
-            nagetiveScore,
-            score: questions.length - correctCount,
-        };
-
-        console.log(examData)
-
-    };
+    const handleChange = (selectedAns, questionId) => {
+        console.log(selectedAns, questionId)
+    }
 
 
-    if (data === null) {
+
+    if (formData === null) {
         return <p className="text-center mt-4">Loading questions...</p>;
     }
 
-    const {
-        questionCategory,
-        questionTitle,
-        examDate,
-        examTime,
-        questions,
-        createdAt,
-    } = data;
+
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
@@ -83,7 +32,7 @@ function ExamPage() {
                 <h1 className="text-3xl font-bold text-gray-800 mb-6">
                     Question Details Preview
                 </h1>
-                <div className="border-b-2 pb-4 mb-6">
+                {/* <div className="border-b-2 pb-4 mb-6">
                     <p className="text-gray-600">
                         <strong>Category:</strong> {questionCategory}
                     </p>
@@ -101,56 +50,38 @@ function ExamPage() {
                         <strong>Created At:</strong>{" "}
                         {new Date(createdAt).toLocaleString("en-US")}
                     </p>
+                </div> */}
+
+                <div className="px-5">
+                    {
+                        formData !== null &&
+                        formData.questions.map((item, index) => (
+                            <div key={index} className=" my-4 p-3 bg-gray-100 rounded-md">
+                                <h2 className="text-2xl font-bold">{item.questionText}</h2>
+                                <div>
+                                    {item.options.map((o, index) => (
+                                        <div key={index}>
+                                            <input
+                                                type="radio"
+                                                name={item.questionId}
+                                                value={o}
+                                                id={`${item.questionId}-${index}`}
+                                                onChange={(e) => handleChange(e.target.value, item.questionId)}
+                                            />
+                                            <label htmlFor={`${item.questionId}-${index}`} className="ml-2">
+                                                {o}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                        ))
+                    }
                 </div>
 
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                            Questions Preview
-                        </h2>
-                        {data && questions.length > 0 ? (
-                            <div className="space-y-6">
-                                {questions.map((question, index) => (
-                                    <div
-                                        key={index}
-                                        className="border rounded-md p-4 bg-gray-50"
-                                    >
-                                        <p className="text-gray-800 font-semibold mb-2">
-                                            Q{index + 1}: {question.questionText}
-                                        </p>
-                                        <div className="space-y-2">
-                                            {question.options.map((option, idx) => (
-                                                <label
-                                                    key={idx}
-                                                    className="block text-gray-700"
-                                                >
-                                                    <input
-                                                        type="radio"
-                                                        name={`question-${index}`}
-                                                        value={option}
-                                                        onChange={() =>
-                                                            handleAnswerChange(index, option)
-                                                        }
-                                                        className="mr-2"
-                                                    />
-                                                    {option}
-                                                </label>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-red-500">No Questions Available</p>
-                        )}
-                    </div>
-                    <button
-                        type="submit"
-                        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700"
-                    >
-                        Submit Answers
-                    </button>
-                </form>
+
+
             </div>
         </div>
     );

@@ -2,10 +2,10 @@ import QuestionModel from "../../model/admin/adminQustionModel.js";
 
 const createQuestion = async (req, res) => {
     try {
-        const { questionCategory, questionTitle, questionId, examDate, examTime, questions } = req.body;
-
+        const { questionCategory, questionTitle, course, examDate, examTime, questions } = req.body;
+      console.log(req.body)
         // Validation
-        if (!questionCategory || !questionTitle || !questionId || !examDate || !examTime || !questions || questions.length === 0) {
+        if (!questionCategory || !questionTitle || !course || !examDate || !examTime || !questions || questions.length === 0) {
             return res.status(400).json({ message: "All fields are required!" });
         }
 
@@ -13,7 +13,7 @@ const createQuestion = async (req, res) => {
         const newQuestionData = new QuestionModel({
             questionCategory,
             questionTitle,
-            questionId,
+            course,
             examDate,
             examTime,
             questions,
@@ -26,7 +26,8 @@ const createQuestion = async (req, res) => {
             data: savedData,
         });
     } catch (error) {
-        return res.status(500).json({
+        console.log(error)
+        return res.status(500).json({ 
             message: "Failed to add question data",
             error: error.message,
         });

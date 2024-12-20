@@ -11,9 +11,10 @@ const QuestionDataSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    questionId: {
-        type: String,
-        required: true, 
+    course: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+        required: true,
     },
     examDate: {
         type: Date,

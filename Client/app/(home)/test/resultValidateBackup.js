@@ -188,9 +188,7 @@ export default function Test() {
                                                 <div key={i2} className=" flex items-center">
                                                     <strong className={`${o === q.selectedAns ?
                                                         q.selectedAns === q.correctAnswer ? "bg-blue-500 px-2 py-1 text-white" :
-                                                            "bg-red-500 px-2 py-1 text-white" : ""} ${o === q.correctAnswer ? "bg-blue-500 px-2 py-1 text-white" : ""}`}>
-                                                               - {o}
-                                                                </strong>
+                                                            "bg-red-500 px-2 py-1 text-white" : ""} ${o === q.correctAnswer ? "bg-blue-500 px-2 py-1 text-white" : ""}`}>{o}</strong>
                                                     <span className=" mx-1">
                                                         {o === q.selectedAns ?
                                                             q.selectedAns === q.correctAnswer ? <span className=" text-2xl text-green-500">
@@ -213,10 +211,6 @@ export default function Test() {
                         {q.correctAnswer}
                     </span></div>}
             </div> */}
-
-                                    <div className=" bg-gray-300 p-3 my-2">
-                                          <p>Solved</p>
-                                    </div>
                                 </div>
                             ))
                         }

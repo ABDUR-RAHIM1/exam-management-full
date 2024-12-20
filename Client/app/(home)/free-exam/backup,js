@@ -1,58 +1,157 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
+import React, { useState, useEffect } from "react";
 
 function ExamPage() {
-    const [answers, setAnswers] = useState(Array(40).fill(null));
+    const [answers, setAnswers] = useState([]);
+    const [data, setData] = useState(null);
 
-    const handleAnswerChange = (index, selectedAnswer) => {
+    useEffect(() => {
+        fetch("http://localhost:8500/api/admin/question/details/67653344d19f9501c7509101")
+            .then((res) => res.json())
+            .then((data) => {
+                setData(data);
+                setAnswers(Array(data.questions.length).fill(null)); // Initialize answers
+            })
+            .catch((err) => console.error("Error fetching questions:", err));
+    }, []);
+
+    const handleAnswerChange = (questionIndex, selectedAnswer) => {
         const updatedAnswers = [...answers];
-        updatedAnswers[index] = selectedAnswer;
+        updatedAnswers[questionIndex] = selectedAnswer;
         setAnswers(updatedAnswers);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("User Answers:", answers);
-        // Handle submission logic here
+        if (answers.includes(null)) {
+            alert("Please answer all questions before submitting.");
+            return;
+        }
+
+        // Validate answers
+        const results = questions.map((question, index) => {
+            const selectedAnswer = answers[index]; // Get selected answer
+            const isCorrect = question.answer === selectedAnswer; // Check if the selected answer is correct
+            return {
+                questionId: index, // Use unique question ID
+                questionText: question.questionText,
+                selectedAnswer, // Include the selected answer value
+                isCorrect,
+            };
+        });
+
+
+        const correctCount = results.filter((result) => result.isCorrect).length;
+
+        alert(`You got ${correctCount} out of ${questions.length} correct!`);
+        const positiveScore = correctCount
+        const nagetiveScore = questions.length - correctCount
+
+        // console.log(positiveScore, nagetiveScore)
+
+        // Prepare the data to send to the backend
+        const examData = {
+            userId: "user123", // Replace with dynamic user ID
+            examId: "exam456", // Replace with dynamic exam ID
+            answers: results,
+            positiveScore,
+            nagetiveScore,
+            score: questions.length - correctCount,
+        };
+
+        console.log(examData)
+
     };
 
-    // Static mock question, will later be replaced with dynamic data
-    const questions = Array.from({ length: 40 }, (_, index) => ({
-        id: index + 1,
-        text: `BCS Question ${index + 1}`,
-        options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
-    }));
-    
+
+    if (data === null) {
+        return <p className="text-center mt-4">Loading questions...</p>;
+    }
+
+    const {
+        questionCategory,
+        questionTitle,
+        examDate,
+        examTime,
+        questions,
+        createdAt,
+    } = data;
 
     return (
-        <div className="max-w-4xl mx-auto p-8 bg-gray-50">
-            <h2 className="text-2xl font-bold text-center mb-6">BCS Exam - 40 Questions</h2>
-            <p className=' text-center my-5 text-lg'>Date : {new Date().toLocaleDateString()}</p>
-            <form onSubmit={handleSubmit}>
-                {questions.map((question, index) => (
-                    <div key={question.id} className="mb-6 p-4 bg-white rounded-md shadow-md">
-                        <p className="text-lg font-semibold mb-2">{`${index + 1}. ${question.text}`}</p>
-                        <div className="space-y-2">
-                            {question.options.map((option, optIndex) => (
-                                <label key={optIndex} className="block">
-                                    <input
-                                        type="radio"
-                                        name={`question-${index}`}
-                                        value={option}
-                                        checked={answers[index] === option}
-                                        onChange={() => handleAnswerChange(index, option)}
-                                        className="mr-2"
-                                    />
-                                    {option}
-                                </label>
-                            ))}
-                        </div>
+        <div className="p-6 bg-gray-100 min-h-screen">
+            <div className="bg-white shadow-md rounded-md p-6 max-w-4xl mx-auto">
+                <h1 className="text-3xl font-bold text-gray-800 mb-6">
+                    Question Details Preview
+                </h1>
+                <div className="border-b-2 pb-4 mb-6">
+                    <p className="text-gray-600">
+                        <strong>Category:</strong> {questionCategory}
+                    </p>
+                    <p className="text-gray-600">
+                        <strong>Title:</strong> {questionTitle}
+                    </p>
+                    <p className="text-gray-600">
+                        <strong>Exam Date:</strong>{" "}
+                        {new Date(examDate).toLocaleDateString("en-US")}
+                    </p>
+                    <p className="text-gray-600">
+                        <strong>Exam Time:</strong> {examTime}
+                    </p>
+                    <p className="text-gray-600">
+                        <strong>Created At:</strong>{" "}
+                        {new Date(createdAt).toLocaleString("en-US")}
+                    </p>
+                </div>
+
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                            Questions Preview
+                        </h2>
+                        {data && questions.length > 0 ? (
+                            <div className="space-y-6">
+                                {questions.map((question, index) => (
+                                    <div
+                                        key={index}
+                                        className="border rounded-md p-4 bg-gray-50"
+                                    >
+                                        <p className="text-gray-800 font-semibold mb-2">
+                                            Q{index + 1}: {question.questionText}
+                                        </p>
+                                        <div className="space-y-2">
+                                            {question.options.map((option, idx) => (
+                                                <label
+                                                    key={idx}
+                                                    className="block text-gray-700"
+                                                >
+                                                    <input
+                                                        type="radio"
+                                                        name={`question-${index}`}
+                                                        value={option}
+                                                        onChange={() =>
+                                                            handleAnswerChange(index, option)
+                                                        }
+                                                        className="mr-2"
+                                                    />
+                                                    {option}
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-red-500">No Questions Available</p>
+                        )}
                     </div>
-                ))}
-                <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-md mt-4 hover:bg-blue-700">
-                    Submit Exam
-                </button>
-            </form>
+                    <button
+                        type="submit"
+                        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700"
+                    >
+                        Submit Answers
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }
