@@ -1,0 +1,11 @@
+user => 
+phone :  01321040273
+pass : 111111
+
+
+admin : 
+{ 
+  "email": "admin@gmail.com",
+  "role" :"admin",
+  "password": "myadmin"
+}

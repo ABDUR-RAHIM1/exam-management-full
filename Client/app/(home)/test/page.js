@@ -1,228 +1,162 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { FaCheck } from "react-icons/fa";
-import { MdClose } from "react-icons/md";
+"use client"
+import React, { useState } from 'react';
 
+const Dashboard = () => {
+    const [questions, setQuestions] = useState([]);
+    const [newQuestion, setNewQuestion] = useState({
+        questionText: '',
+        options: ['', '', '', ''],
+        selectedAns: '',
+        correctAns: '',
+    });
+    const [editingIndex, setEditingIndex] = useState(null);  // কোন প্রশ্নে এডিট করা হচ্ছে তা ট্র্যাক করতে হবে
 
-
-
-// op1 -> protita onchange a PUT API call kore selectedAns : field update kora
-// op2 -> question data fetch kore state a rakha abong onchange a question ID diye find/map kore sudhu state er data change kora o onSubmit a puro state PUT/POST kore new result sheet create  submit kora 
-export default function Test() {
-    const questionPaper = {
-        questionCategory: "BCS",
-        questionTitle: "BCS 01",
-        courseId: "BCS2222",
-        examDate: "2024-12-12",
-        examTime: "12:35 PM",
-        questions: [
-            {
-                questionId: "1",
-                questionText: "What is the capital of France?",
-                options: ["Paris", "London", "Rome", "Berlin"],
-                answer: "Paris",
-                selectedAns: "",
-            },
-            {
-                questionId: "2",
-                questionText: "What is the largest planet in our Solar System?",
-                options: ["Earth", "Mars", "Jupiter", "Saturn"],
-                answer: "Jupiter",
-                selectedAns: "",
-            },
-            {
-                questionId: "3",
-                questionText: "Who wrote 'Hamlet'?",
-                options: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Jane Austen"],
-                answer: "William Shakespeare",
-                selectedAns: "",
-            },
-            {
-                questionId: "4",
-                questionText: "What is the boiling point of water at sea level?",
-                options: ["90°C", "100°C", "110°C", "120°C"],
-                answer: "100°C",
-                selectedAns: "",
-            },
-            {
-                questionId: "5",
-                questionText: "What is the smallest prime number?",
-                options: ["0", "1", "2", "3"],
-                answer: "2",
-                selectedAns: "",
-            },
-        ],
-    };
-
-    const [formData, setFormData] = useState(null);
-
-    console.log(formData)
-    useEffect(() => {
-        setFormData(questionPaper)
-    }, [])
-
-    const handleChange = (selectedAns, questionId) => {
-        // Update the selectedAns for the specific question
-        const updatedQuestions = formData.questions.map((q) =>
-            q.questionId === questionId ? { ...q, selectedAns } : q
-        );
-
-        // Update formData with the new questions array
-        setFormData({ ...formData, questions: updatedQuestions });
-    };
-
-
-    const [resultData, setResultData] = useState(null)
-    // Submit the form and send data to the backend
-    
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        // Prepare the result data to send to the server
-
-        const result = formData.questions.map(q => ({
-            questionId: q.questionId,
-            questionText: q.questionText,
-            options: q.options,
-            selectedAns: q.selectedAns,
-            correctAnswer: q.answer,
-            isCorrect: q.selectedAns === q.answer
+    // প্রশ্নের জন্য ইনপুট পরিবর্তন করার হ্যান্ডলার
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewQuestion((prev) => ({
+            ...prev,
+            [name]: value,
         }));
+    };
 
-        // Calculate right and wrong answers
-        const rightAnswers = result.filter(item => item.isCorrect).length;
-        const wrongAnswers = result.length - rightAnswers;
+    // অপশনগুলির জন্য ইনপুট পরিবর্তন করার হ্যান্ডলার
+    const handleOptionChange = (index, value) => {
+        const updatedOptions = [...newQuestion.options];
+        updatedOptions[index] = value;
+        setNewQuestion((prev) => ({
+            ...prev,
+            options: updatedOptions,
+        }));
+    };
 
-        const resultData = {
-            questionCategory: formData.questionCategory,
-            questionTitle: formData.questionTitle,
-            courseId: formData.courseId,
-            examDate: formData.examDate,
-            examTime: formData.examTime,
-            questions: result,// Sending all question data with answers and correctness
-            rightAnswers: rightAnswers, // Total correct answers
-            wrongAnswers: wrongAnswers // Total wrong answers
+    // নতুন প্রশ্ন যোগ করা
+    const handleAddQuestion = () => {
+        if (editingIndex !== null) {
+            // যদি কোন প্রশ্ন এডিট করা হচ্ছে, তাহলে সেটি আপডেট করুন
+            const updatedQuestions = [...questions];
+            updatedQuestions[editingIndex] = newQuestion;
+            setQuestions(updatedQuestions);
+            setEditingIndex(null);  // সম্পাদনা শেষ হলে ইনডেক্স রিসেট করুন
+        } else {
+            // নতুন প্রশ্ন যোগ করুন
+            setQuestions((prev) => [...prev, newQuestion]);
+        }
+        setNewQuestion({
+            questionText: '',
+            options: ['', '', '', ''],
+            selectedAns: '',
+            correctAns : ''
+        });
+    };
+
+    // প্রশ্নটি সম্পাদনা করা
+    const handleEditQuestion = (index) => {
+        setNewQuestion(questions[index]);
+        setEditingIndex(index); // যে প্রশ্নটি এডিট করতে চাই তা নির্ধারণ করা
+    };
+
+    // ডাটা POST করার জন্য সাবমিট হ্যান্ডলার
+    const handleSubmit = async () => {
+        const dataToSend = {
+            questionCategory: "BCS",
+            questionTitle: "BCS 02",
+            course: "675aa8a51b021c1213325b39",
+            examDate: "2024-12-15",
+            examTime: "10:00 AM",
+            questions: questions
         };
 
-        setResultData(resultData)
-        console.log(resultData)
         try {
-            // setLoading(true);
-            // const response = await axios.post('/api/save-result', resultData);
-            alert('Results saved successfully!');
+            // const response = await fetch('YOUR_API_URL_HERE', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(dataToSend),
+            // });
+            // const result = await response.json();
+            console.log('Response:', dataToSend);
         } catch (error) {
-            console.error('Error saving result:', error);
-            alert('Error saving result');
-        } finally {
-            // setLoading(false);
+            console.error('Error:', error);
         }
     };
 
-    console.log(resultData)
-
     return (
-        <div className="p-20">
-            <h1 className="text-2xl font-bold mb-6">{questionPaper.questionTitle}</h1>
-            <form onSubmit={handleSubmit}>
-                {questionPaper.questions.map((q) => (
-                    <div key={q.questionId} className="bg-gray-200 p-3 my-4">
-                        <p>
-                            <span className="font-bold mx-3">{q.questionId}.</span>
-                            {q.questionText}
-                        </p>
-                        <div>
-                            {q.options.map((o, index) => (
-                                <div key={index}>
-                                    <input
-                                        type="radio"
-                                        name={q.questionId}
-                                        value={o}
-                                        id={`${q.questionId}-${index}`}
-                                        onChange={(e) => handleChange(e.target.value, q.questionId)}
-                                    />
-                                    <label htmlFor={`${q.questionId}-${index}`} className="ml-2">
-                                        {o}
-                                    </label>
-                                </div>
-                            ))}
+        <div className="min-h-screen bg-gray-100 p-8">
+            <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+                <h1 className="text-3xl font-bold text-center mb-6">Question Dashboard</h1>
+                <div className="mb-6">
+                    <h2 className="text-2xl font-semibold mb-4">{editingIndex !== null ? 'Edit Question' : 'Add New Question'}</h2>
+                    <input
+                        type="text"
+                        name="questionText"
+                        value={newQuestion.questionText}
+                        onChange={handleInputChange}
+                        className="w-full p-3 border border-gray-300 rounded-md mb-4"
+                        placeholder="Enter Question"
+                    />
+                    {newQuestion.options.map((option, index) => (
+                        <div key={index} className="mb-3">
+                            <input
+                                type="text"
+                                value={option}
+                                onChange={(e) => handleOptionChange(index, e.target.value)}
+                                className="w-full p-3 border border-gray-300 rounded-md"
+                                placeholder={`Option ${index + 1}`}
+                            />
                         </div>
-                    </div>
-                ))}
-                <button
-                    type="submit"
-                    className="mt-4 px-6 py-2 bg-blue-500 text-white font-bold rounded"
-                >
-                    Submit
-                </button>
-            </form>
-
-
-
-            <div className=" my-10"></div>
-            <h2 className=" text-3xl font-bold my-3">Preview</h2>
-
-            {resultData !== null &&
-                <div>
-                    <h3 className="text-2xl font-bold">{resultData.questionCategory} </h3>
-                    <h3 className="text-2xl font-bold">{resultData.questionTitle} </h3>
-                    <div className=" flex items-center justify-between my-4">
-                        <p>{resultData.examDate}</p>
-                        <p>{resultData.examTime}</p>
-                    </div>
-                    <div className=" text-blue-600 font-bold text-2xl my-5 flex items-center justify-between">
-                        <p> <span className=" mx-2">Total Q:</span> {resultData.rightAnswers + resultData.wrongAnswers}</p>
-                        <p><span className=" mx-2">Right Q:</span>{resultData.rightAnswers}</p>
-                        <p><span className=" mx-2">Wrong Q:</span>{resultData.wrongAnswers}</p>
-                    </div>
-
-                    <div className=" my-5">
-                        {
-                            resultData.questions.map((q, i) => (
-                                <div key={i} className="bg-gray-200 p-3 my-4 rounded-md">
-                                    <h2 className="text-2xl">{q.questionText}</h2>
-                                    <ul className=" list-disc list-inside space-y-2 my-5">
-                                        {
-                                            // q.options.map((o, i2) => (
-                                            //     <li key={i2} className={`${o === q.selectedAns ? "text-green-700 font-bold" :"text-black"}`}>{o}</li>
-                                            // ))
-                                            q.options.map((o, i2) => (
-                                                <div key={i2} className=" flex items-center">
-                                                    <strong className={`${o === q.selectedAns ?
-                                                        q.selectedAns === q.correctAnswer ? "bg-blue-500 px-2 py-1 text-white" :
-                                                            "bg-red-500 px-2 py-1 text-white" : ""} ${o === q.correctAnswer ? "bg-blue-500 px-2 py-1 text-white" : ""}`}>
-                                                               - {o}
-                                                                </strong>
-                                                    <span className=" mx-1">
-                                                        {o === q.selectedAns ?
-                                                            q.selectedAns === q.correctAnswer ? <span className=" text-2xl text-green-500">
-                                                                <FaCheck />
-                                                            </span>
-                                                                :
-                                                                <span className=" text-2xl text-red-500">  <MdClose /></span> : ""}
-                                                    </span>
-                                                </div>
-                                            ))
-                                        }
-                                    </ul>
-                                    {/*  description page */}
-                                    {/* <div className=" bg-gray-300 p-3 my-2">
-                <div> <span className=" font-bold mx-2">Your Ans : </span>
-                    <span className={`${q.isCorrect ? "text-green-700" : "text-red-500"}`}>{q.selectedAns}</span>
+                    ))}
+                    <input
+                        type="text"
+                        name="correctAns"
+                        value={newQuestion.correctAns}
+                        onChange={handleInputChange}
+                        className="w-full p-3 border border-gray-300 rounded-md mb-4"
+                        placeholder="Enter Correct Answer"
+                    />
+                    <button
+                        onClick={handleAddQuestion}
+                        className="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-200"
+                    >
+                        {editingIndex !== null ? 'Update Question' : 'Add Question'}
+                    </button>
                 </div>
-                {!q.isCorrect && <div> <span className=" font-bold mx-2">Correct Ans : </span>
-                    <span className=" text-blue-700 font-bold">
-                        {q.correctAnswer}
-                    </span></div>}
-            </div> */}
 
-                                    <div className=" bg-gray-300 p-3 my-2">
-                                          <p>Solved</p>
-                                    </div>
-                                </div>
-                            ))
-                        }
-                    </div>
-                </div>}
+                <div className="mb-6">
+                    <h2 className="text-2xl font-semibold mb-4">Added Questions</h2>
+                    {questions.length === 0 ? (
+                        <p className="text-gray-500">No questions added yet.</p>
+                    ) : (
+                        questions.map((q, index) => (
+                            <div key={index} className="bg-gray-50 p-4 rounded-md mb-4 shadow-md">
+                                <p className="font-semibold">{q.questionText}</p>
+                                <ul className="ml-4 mt-2 space-y-2">
+                                    {q.options.map((opt, idx) => (
+                                        <li key={idx} className="text-gray-700">- {opt}</li>
+                                    ))}
+                                </ul>
+                                <p className="mt-2 text-sm text-gray-500">Correct Answer: {q.correctAns}</p>
+                                <button
+                                    onClick={() => handleEditQuestion(index)}
+                                    className="mt-2 py-1 px-4 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-200"
+                                >
+                                    Edit
+                                </button>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                <button
+                    onClick={handleSubmit}
+                    className="w-full py-3 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 transition duration-200"
+                >
+                    Submit Questions
+                </button>
+            </div>
         </div>
     );
-}
+};
+
+export default Dashboard;

@@ -83,7 +83,7 @@ function UpcomingExamPage() {
 
 
     return (
-        <div className="p-6 bgGradient min-h-screen flex items-center justify-center">
+        <div className="p-6  min-h-screen flex items-center justify-center">
             <div className="bg-white shadow-lg rounded-lg p-8 max-w-4xl w-full">
                 <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
                     Question Paper

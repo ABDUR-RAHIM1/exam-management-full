@@ -24,7 +24,7 @@ export default async function ProfileLayout({ children }) {
         <div className="flex h-screen overflow-hidden">
             <ProfileSidebar profileInfo={result} />
 
-            <main className="  flex-1 h-screen overflow-y-auto scrollbar-hidden bg-gray-200 py-16 md:py-10 px-4">
+            <main className=" bgGradient  flex-1 h-screen overflow-y-auto scrollbar-hidden bg-gray-200 py-16 md:py-10 px-4">
                 {children}
             </main>
         </div>
