@@ -6,16 +6,16 @@ import { createPurchase, deletePurchase, getAllPurchases, getPurchaseById, updat
 const router = express.Router();
 
 // Create a new purchase
-router.post("/purchase", authGuard, createPurchase);
+router.post("/purchase", authGuard, createPurchase); // ok for user
 
 // Retrieve all purchases
-router.get("/purchase", getAllPurchases);
+router.get("/purchase", getAllPurchases); /// ok for admin
 
 // Retrieve a specific purchase by ID
-router.get("/purchase/me", authGuard, getPurchaseById);
+router.get("/purchase/me", authGuard, getPurchaseById);  // ok admin
 
 // Update a purchase by ID
-router.put("/purchase/:id", updatePurchase);  // not using at a time
+router.put("/purchase/:id", updatePurchase);  // not using at a time 
 
 // Delete a purchase by ID
 router.delete("/purchase/:id", deletePurchase); // not using at a time

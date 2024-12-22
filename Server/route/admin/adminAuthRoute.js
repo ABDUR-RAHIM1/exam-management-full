@@ -5,21 +5,21 @@ import adminAuthGuard from "../../midlewere/adminAuthGurad.js";
 const router = express.Router();
 
 // Create Admin
-router.post("/register", createAdmin);
+router.post("/register", createAdmin); // almost ok
 
 // Admin Login
-router.post("/login", adminLogin);
+router.post("/login", adminLogin);  //ok
 
 // get all admins
-router.get("/get/all", adminAuthGuard, getallAdmins)
+router.get("/get/all", adminAuthGuard, getallAdmins) //
 
 // get admin by id 
-router.get("/get/me", adminAuthGuard, getAdminById)
+router.get("/get/me", adminAuthGuard, getAdminById) //
 
 // Update Admin
-router.put("/update/:id", updateAdmin);
+router.put("/update/:id", updateAdmin); //
 
 // Delete Admin
-router.delete("/delete/:id", deleteAdmin);
+router.delete("/delete/:id", deleteAdmin); //
 
 export default router;

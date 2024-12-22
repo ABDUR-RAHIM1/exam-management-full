@@ -9,7 +9,7 @@ function UpcomingExamPage() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetch("http://localhost:8500/api/admin/question/details/67683754dd16677716fe52b5")
+        fetch("http://localhost:8500/api/admin/question/details/67680ca19fd172a254429b5d")
             .then((res) => res.json())
             .then((data) => {
                 console.log(data)
@@ -19,9 +19,8 @@ function UpcomingExamPage() {
     }, []);
 
 
-    const handleChange = (selectedAnsIndex, questionId) => {
-        const selectedAns = selectedAnsIndex + 1;
-        console.log(selectedAns)
+    const handleChange = (selectedAns, questionId) => {
+        console.log(selectedAns , questionId)
         const updatedQuestions = formData.questions.map((q) =>
             q.questionId === questionId ? { ...q, selectedAns } : q
         );
@@ -29,6 +28,7 @@ function UpcomingExamPage() {
         // Update formData with the new questions array
         setFormData({ ...formData, questions: updatedQuestions });
     }
+
 
     const handleQuestionSubmit = async () => {
 
@@ -40,10 +40,9 @@ function UpcomingExamPage() {
             options: q.options,
             selectedAns: q.selectedAns,
             correctAns: q.correctAns,
-            clarification: q.clarification, /// afer delete decription
-            isCorrect: Number(q.selectedAns) === Number(q.correctAns) //  akhane protita isCorrect compire kore true false store korce
+            clarification: q.clarification || q.description, /// afer delete decription
+            isCorrect: q.selectedAns === q.answer
         }));
-        console.log(result)
 
         // Calculate right and wrong answers
         const rightAnswers = result.filter(item => item.isCorrect).length;
@@ -130,7 +129,7 @@ function UpcomingExamPage() {
                                                 value={o}
                                                 id={`${item.questionId}-${idx}`}
                                                 className="w-5 h-5 text-blue-600 focus:ring-blue-500 border-gray-300"
-                                                onChange={(e) => handleChange(idx, item.questionId)}
+                                                onChange={(e) => handleChange(e.target.value, item.questionId)}
                                             />
                                             <label
                                                 htmlFor={`${item.questionId}-${idx}`}

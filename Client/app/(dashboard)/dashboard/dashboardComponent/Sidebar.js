@@ -3,58 +3,13 @@ import { contextApi } from "@/app/contextApi/Context";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useContext } from "react";
-import { FaRegCircleQuestion } from "react-icons/fa6";
-import { MdOutlineDashboardCustomize } from "react-icons/md";
-import { TbDeviceTabletQuestion } from "react-icons/tb"
-import { SiThefinals  } from "react-icons/si"
-import { BiSolidPurchaseTag   } from "react-icons/bi"
-import { IoCreate } from "react-icons/io5";
-import { BsClipboardDataFill  } from "react-icons/bs";
-import { GrCertificate   } from "react-icons/gr";
-import { CiSettings   } from "react-icons/ci";
+import items from "./SidebarItems";
+
 
 export default function Sidebar() {
     const { dashArrowClick, setDashArrowClick } = useContext(contextApi);
     const path = usePathname();
-
-    const items = [
-        {
-            parentItem: "Home",
-            childItem: [
-                { icon: <MdOutlineDashboardCustomize />, item: "Dashboard", path: "/dashboard" },
-            ],
-        },
-        {
-            parentItem: "Questions",
-            childItem: [
-                { icon: <FaRegCircleQuestion  />, item: "Add Question", path: "/dashboard/questions/add" },
-                { icon: <TbDeviceTabletQuestion />, item: "All Questions", path: "/dashboard/questions/all" },
-            ],
-        },
-        {
-            parentItem: "Courses",
-            childItem: [
-                { icon: <IoCreate  />, item: "Create Course", path: "/dashboard/courses/add" },
-                { icon: <BsClipboardDataFill  />, item: "All Course", path: "/dashboard/courses/all" },
-                { icon: <BiSolidPurchaseTag  />, item: "Purchase", path: "/dashboard/courses/purchase" },
-            ],
-        },
-        {
-            parentItem: "Results",
-            childItem: [
-                { icon: <SiThefinals />, item: "Exam Results", path: "/dashboard/exam-results" },
-                { icon: <GrCertificate  />, item: "Certificate", path: "/dashboard/results/certificate" },
-            ],
-        },
-        {
-            parentItem: "Settings",
-            childItem: [
-                { icon: <CiSettings  />, item: "Profile Settings", path: "/dashboard/settings/profile" },
-                { icon: <CiSettings  />, item: "Account Settings", path: "/dashboard/settings/account" },
-            ],
-        },
-    ];
-
+ 
     return (
         <div
             className={`${dashArrowClick ? "w-[80px] px-5" : "w-[200px] pr-5"} pt-20

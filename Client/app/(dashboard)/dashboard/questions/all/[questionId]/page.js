@@ -81,7 +81,7 @@ export default async function QuestionsDetails({ params }) {
                                             Correct Answer: {question.correctAns}
                                         </p>
                                         <p className='text-blue-500'>
-                                            Clarification: {question.description}
+                                            Clarification: {question.clarification || question.description}
                                         </p>
                                     </div>
                                 </div>

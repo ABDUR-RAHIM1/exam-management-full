@@ -10,8 +10,24 @@ const Dashboard = () => {
         options: ['', '', '', ''],
         selectedAns: '',
         correctAns: '',
+        description: ""
     });
     const [editingIndex, setEditingIndex] = useState(null);  // Track which question is being edited
+
+
+    //  handle Question Header Change 
+
+    const [utilsData, setUtilsData] = useState({
+        categorie: "",
+        examDate: "",
+        examTime: "",
+        duration: ""
+    })
+    const handleHeaderChange = (e) => {
+        const { name, value } = e.target
+        console.log(name, value)
+        setUtilsData({ ...utilsData, [name]: value })
+    }
 
 
     // Handle input changes for question text and other fields
@@ -67,11 +83,11 @@ const Dashboard = () => {
     // Submit the data
     const handleSubmit = async () => {
         const dataToSend = {
-            questionCategory: "BCS",
-            questionTitle: "BCS 02",
+            questionCategory: utilsData.categorie,
+            questionTitle: utilsData.title || "title",
             course: "675aa8a51b021c1213325b39",
-            examDate: "2024-12-15",
-            examTime: "10:00 AM",
+            examDate: utilsData.examDate,
+            examTime: utilsData.examTime,
             questions: questions
         };
 
@@ -83,10 +99,21 @@ const Dashboard = () => {
         }
     };
 
+
+
+
     return (
         <div className="min-h-screen bg-gray-100 p-8">
             <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
                 <h1 className="text-3xl font-bold text-center mb-6">Question Dashboard</h1>
+                {/*  question header / title , id , exam Date , exam Time */}
+                <div className=' my-5'>
+                    <input onChange={handleHeaderChange} name='categorie' type="text" placeholder='Categories' className='input' />
+                    <input onChange={handleHeaderChange} name='examDate' type="date" placeholder='Exam Date' className='input' />
+                    <input onChange={handleHeaderChange} name='examTime' type="time" placeholder='Exam Time' className='input' />
+                    <input onChange={handleHeaderChange} name='duration' type="text" placeholder='Exam Duration' className='input' />
+                </div>
+
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold mb-4">{editingIndex !== null ? 'Edit Question' : 'Add New Question'}</h2>
                     <input
@@ -116,6 +143,14 @@ const Dashboard = () => {
                         className="w-full p-3 border border-gray-300 rounded-md mb-4"
                         placeholder="Enter Correct Answer"
                     />
+                    <input
+                        type="text"
+                        name="description"
+                        value={newQuestion.description}
+                        onChange={handleInputChange}
+                        className="w-full p-3 border border-gray-300 rounded-md mb-4"
+                        placeholder="Correct Answer Desciption"
+                    />
                     <button
                         onClick={handleAddQuestion}
                         className="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-200"
@@ -138,6 +173,7 @@ const Dashboard = () => {
                                     ))}
                                 </ul>
                                 <p className="mt-2 text-sm text-gray-500">Correct Answer: {q.correctAns}</p>
+                                <p className="mt-2 text-sm text-gray-500">Description: {q.description}</p>
                                 <button
                                     onClick={() => handleEditQuestion(index)}
                                     className="mt-2 py-1 px-4 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-200"
