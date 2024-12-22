@@ -1,17 +1,20 @@
 "use client"
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';  // Import uuid to generate unique IDs
 
 const Dashboard = () => {
     const [questions, setQuestions] = useState([]);
     const [newQuestion, setNewQuestion] = useState({
+        questionId: '', // Initialize as an empty string or null
         questionText: '',
         options: ['', '', '', ''],
         selectedAns: '',
         correctAns: '',
     });
-    const [editingIndex, setEditingIndex] = useState(null);  // কোন প্রশ্নে এডিট করা হচ্ছে তা ট্র্যাক করতে হবে
+    const [editingIndex, setEditingIndex] = useState(null);  // Track which question is being edited
 
-    // প্রশ্নের জন্য ইনপুট পরিবর্তন করার হ্যান্ডলার
+    
+    // Handle input changes for question text and other fields
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewQuestion((prev) => ({
@@ -20,7 +23,7 @@ const Dashboard = () => {
         }));
     };
 
-    // অপশনগুলির জন্য ইনপুট পরিবর্তন করার হ্যান্ডলার
+    // Handle changes for option inputs
     const handleOptionChange = (index, value) => {
         const updatedOptions = [...newQuestion.options];
         updatedOptions[index] = value;
@@ -30,33 +33,38 @@ const Dashboard = () => {
         }));
     };
 
-    // নতুন প্রশ্ন যোগ করা
+    // Add or update a question
     const handleAddQuestion = () => {
         if (editingIndex !== null) {
-            // যদি কোন প্রশ্ন এডিট করা হচ্ছে, তাহলে সেটি আপডেট করুন
+            // If editing, update the question with the same ID
             const updatedQuestions = [...questions];
             updatedQuestions[editingIndex] = newQuestion;
             setQuestions(updatedQuestions);
-            setEditingIndex(null);  // সম্পাদনা শেষ হলে ইনডেক্স রিসেট করুন
+            setEditingIndex(null);  // Reset the edit index after update
         } else {
-            // নতুন প্রশ্ন যোগ করুন
-            setQuestions((prev) => [...prev, newQuestion]);
+            // If adding, assign a new unique ID
+            setQuestions((prev) => [
+                ...prev,
+                { ...newQuestion, questionId: uuidv4() }, // Use uuidv4() to generate a unique ID
+            ]);
         }
+        // Reset the new question state
         setNewQuestion({
+            questionId: '',
             questionText: '',
             options: ['', '', '', ''],
             selectedAns: '',
-            correctAns : ''
+            correctAns: '',
         });
     };
 
-    // প্রশ্নটি সম্পাদনা করা
+    // Edit a question
     const handleEditQuestion = (index) => {
         setNewQuestion(questions[index]);
-        setEditingIndex(index); // যে প্রশ্নটি এডিট করতে চাই তা নির্ধারণ করা
+        setEditingIndex(index); // Set the index of the question being edited
     };
 
-    // ডাটা POST করার জন্য সাবমিট হ্যান্ডলার
+    // Submit the data
     const handleSubmit = async () => {
         const dataToSend = {
             questionCategory: "BCS",
@@ -68,14 +76,7 @@ const Dashboard = () => {
         };
 
         try {
-            // const response = await fetch('YOUR_API_URL_HERE', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(dataToSend),
-            // });
-            // const result = await response.json();
+            // You can replace this part with your API call
             console.log('Response:', dataToSend);
         } catch (error) {
             console.error('Error:', error);
@@ -129,7 +130,7 @@ const Dashboard = () => {
                         <p className="text-gray-500">No questions added yet.</p>
                     ) : (
                         questions.map((q, index) => (
-                            <div key={index} className="bg-gray-50 p-4 rounded-md mb-4 shadow-md">
+                            <div key={q.questionId} className="bg-gray-50 p-4 rounded-md mb-4 shadow-md">
                                 <p className="font-semibold">{q.questionText}</p>
                                 <ul className="ml-4 mt-2 space-y-2">
                                     {q.options.map((opt, idx) => (

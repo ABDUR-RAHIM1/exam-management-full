@@ -7,9 +7,19 @@ export default function Context({ children }) {
     const [manageData, setManageData] = useState(null);
     const [cart, setCart] = useState([])
 
+
+    /// dashboard 
+    const [dashArrowClick, setDashArrowClick] = useState(false)
+    /// dashboard end
+
     const value = {
         manageData, setManageData,
-        cart ,setCart
+        cart, setCart,
+
+
+        // dashboard start
+        dashArrowClick, setDashArrowClick
+        // dashboard End
     }
 
     return (

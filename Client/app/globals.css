@@ -22,6 +22,27 @@ body {
 
 @layer components {
 
+  /*  basic utility Start */
+  h1 {
+    @apply text-4xl font-bold text-gray-800;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold text-gray-700;
+  }
+
+  h3 {
+    @apply text-2xl font-medium text-gray-600;
+  }
+
+  p {
+    @apply text-base text-gray-600 leading-relaxed;
+  }
+ 
+
+  /*  basic utility End */
+
+
   a {
     @apply text-black
   }

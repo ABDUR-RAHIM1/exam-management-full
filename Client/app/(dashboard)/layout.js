@@ -5,6 +5,8 @@ import DashboardSidebar from "./dashboard/dashboardComponent/DashboardSidebar";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import Context from "../contextApi/Context";
+import DashNav from "./dashboard/dashboardComponent/DashNav";
+import Sidebar from "./dashboard/dashboardComponent/Sidebar";
 
 export const metadata = {
     title: "Dashboard Online-exam",
@@ -14,26 +16,23 @@ export const metadata = {
 export default function DashboardLayout({ children }) {
     return (
         <html lang="en">
-            <body className="bg-gray-100 text-gray-900">
+            <body className="bg-gray-200 h-screen overflow-hidden text-gray-900">
                 <Context>
                     <ToastContainer />
-                    <div className="flex h-screen overflow-hidden">
-
-                        {/* Sidebar */}
-                        <aside className="w-[300px] overflow-y-auto bg-blue-900 text-white flex flex-col items-start p-4 space-y-6">
-                            <DashboardSidebar />
+                    <header className="w-full">
+                        <DashNav />
+                    </header>
+                    <div className="flex h-screen ">
+                        <aside className=" h-full">
+                            <Sidebar />
                         </aside>
-
-                        {/* Main Content */}
-                        <main className="flex-1 overflow-y-auto p-8 bg-gray-100">
-
-
-                            {/* Children content */}
-                            <section className="mt-8">
-                                {children}
-                            </section>
+                        <main className="flex-1 pt-28 px-5  bg-white rounded-md overflow-y-auto">
+                            {children}
+                            <div style={{ height: "1000px" }}></div>
                         </main>
                     </div>
+
+
                 </Context>
             </body>
         </html>
