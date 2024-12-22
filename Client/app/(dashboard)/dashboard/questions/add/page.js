@@ -5,24 +5,25 @@ import { contextApi } from "@/app/contextApi/Context";
 import useClientDataHandler from "@/app/Handler/usersHandler/useClientDataHandler";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from 'uuid';  // Import uuid to generate unique IDs
 
 export default function AddQuestion() {
     const getClientDataHandler = useClientDataHandler();
     const [title, setTitle] = useState(""); // filter title from backend
     const [courseData, setCourseData] = useState(null);
     const [loading, setLoading] = useState(false)
-    const [questionData, setQuestionData] = useState({
-        questionCategory: "",
-        questionTitle: "",
-        questionId: "",
-        examDate: "",
-        examTime: "",
-        sl: 1,
-        qus: "",
-        opt: "",
-        ans: ""
-    });
-    const [questions, setQuestions] = useState([]); // State to store all questions
+    // const [questionData, setQuestionData] = useState({
+    //     questionCategory: "",
+    //     questionTitle: "",
+    //     questionId: "",
+    //     examDate: "",
+    //     examTime: "",
+    //     sl: 1,
+    //     qus: "",
+    //     opt: "",
+    //     ans: ""
+    // });
+    // const [questions, setQuestions] = useState([]); // State to store all questions
     // const { manageData } = useContext(contextApi)
 
     // const isUpdated = manageData && Object.keys(manageData).length > 0;
@@ -35,6 +36,8 @@ export default function AddQuestion() {
     //     }
     // }, [])
 
+
+    /// select course data fecting 
     useEffect(() => {
         const fetchData = async () => {
             const data = await getClientDataHandler(publicCourseGet);
@@ -45,202 +48,310 @@ export default function AddQuestion() {
     }, []);
 
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setQuestionData({ ...questionData, [name]: value });
-    };
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setQuestionData({ ...questionData, [name]: value });
+    // };
 
-    const handleAddMultipleQuestion = () => {
-        const optionsArray = questionData.opt.split(",").map(opt => opt.trim());
-        const newQuestion = {
-            ...questionData,
-            sl: questions.length + 1,
-            opt: optionsArray
-        };
-        setQuestions([...questions, newQuestion]);
-        setQuestionData({ ...questionData, qus: "", opt: "", ans: "" }); // Reset question inputs
-    };
+    // const handleAddMultipleQuestion = () => {
+    //     const optionsArray = questionData.opt.split(",").map(opt => opt.trim());
+    //     const newQuestion = {
+    //         ...questionData,
+    //         sl: questions.length + 1,
+    //         opt: optionsArray
+    //     };
+    //     setQuestions([...questions, newQuestion]);
+    //     setQuestionData({ ...questionData, qus: "", opt: "", ans: "" }); // Reset question inputs
+    // };
 
-    const handleSubmitPaper = async () => {
-        setLoading(true)
-        try {
-            const formData = {
-                ...questionData,
-                questions,
-            };
-            const { status, result } = await postDataHandler(formData, "POST", questionAdd)
+    // const handleSubmitPaper = async () => {
+    //     setLoading(true)
+    //     try {
+    //         const formData = {
+    //             ...questionData,
+    //             questions,
+    //         };
+    //         const { status, result } = await postDataHandler(formData, "POST", questionAdd)
 
-            if (status === 201) {
-                toast.success(result.message)
-            } else if (status !== 200 || status !== 201) {
-                toast.error(result.message)
-            }
+    //         if (status === 201) {
+    //             toast.success(result.message)
+    //         } else if (status !== 200 || status !== 201) {
+    //             toast.error(result.message)
+    //         }
 
-        } catch (error) {
-            console.log(error)
-            toast.error("Added Failed!")
-        } finally {
-            setLoading(false)
-        }
-    };
+    //     } catch (error) {
+    //         console.log(error)
+    //         toast.error("Added Failed!")
+    //     } finally {
+    //         setLoading(false)
+    //     }
+    // };
 
     useEffect(() => {
         const filterByTitle = courseData?.find(
             (f1) => f1.title.toLocaleLowerCase() === title.toLocaleLowerCase()
         );
 
-        setQuestionData({
-            ...questionData,
+        setQuesHeader({
+            ...quesHeader,
             questionCategory: filterByTitle?.category,
             questionTitle: filterByTitle?.title,
-            questionId: filterByTitle?._id,
+            courseId: filterByTitle?._id,
         });
     }, [title]);
 
+
+    // ======================
+    // new
+    // ======================
+
+    const [quesHeader, setQuesHeader] = useState({
+        questionCategory: "",
+        questionTitle: "",
+        courseId: "",
+        examDate: "",
+        examTime: "",
+        examDuration: ""
+    })
+
+
+    const handleQuesHeader = (e) => {
+        const { name, value } = e.target;
+        setQuesHeader((prev) => ({ ...prev, [name]: value }))
+    }
+
+    const [questions, setQuestions] = useState([]);
+    const [newQuestion, setNewQuestion] = useState({
+        questionId: '', // Initialize as an empty string or null
+        questionText: '',
+        options: ['', '', '', ''],
+        selectedAns: '',
+        correctAns: '',
+        description: ""
+    });
+    const [editingIndex, setEditingIndex] = useState(null);  // Track which question is being edited
+    // Handle input changes for question text and other fields
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewQuestion((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    // Handle changes for option inputs
+    const handleOptionChange = (index, value) => {
+        const updatedOptions = [...newQuestion.options];
+        updatedOptions[index] = value;
+        setNewQuestion((prev) => ({
+            ...prev,
+            options: updatedOptions,
+        }));
+    };
+
+    // Add or update a question
+    const handleAddQuestion = () => {
+        if (editingIndex !== null) {
+            // If editing, update the question with the same ID
+            const updatedQuestions = [...questions];
+            updatedQuestions[editingIndex] = newQuestion;
+            setQuestions(updatedQuestions);
+            setEditingIndex(null);  // Reset the edit index after update
+        } else {
+            // If adding, assign a new unique ID
+            setQuestions((prev) => [
+                ...prev,
+                { ...newQuestion, questionId: uuidv4() }, // Use uuidv4() to generate a unique ID
+            ]);
+        }
+        // Reset the new question state
+        setNewQuestion({
+            questionId: '',
+            questionText: '',
+            options: ['', '', '', ''],
+            selectedAns: '',
+            correctAns: '',
+            description: ''
+        });
+    };
+
+    // Edit a question
+    const handleEditQuestion = (index) => {
+        setNewQuestion(questions[index]);
+        setEditingIndex(index); // Set the index of the question being edited
+    };
+    console.log(quesHeader)
+    // Submit the data
+    const handleQuestionSubmit = async () => {
+        const dataToSend = {
+            questionCategory: quesHeader.questionCategory,
+            questionTitle: quesHeader.questionTitle,
+            courseId: quesHeader.courseId,
+            examDate: quesHeader.examDate,
+            examTime: quesHeader.examTime,
+            examDuration: quesHeader.examDuration,
+            questions: questions
+        };
+
+        try {
+            // You can replace this part with your API call
+            console.log('Response:', dataToSend);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+
     return (
-        <div className="w-[80%] mx-auto">
-            <div className="p-4 bg-white rounded-md shadow-md my-10">
-                <div className="my-3">
-                    <h2 className="my-2 font-bold">Question Category</h2>
-                    <select
-                        onChange={(e) => setTitle(e.target.value)}
-                        name="questionTitle"
-                        required
-                        className="input"
+        <div className=" bg-gray-100  px-8 py-5 rounded-md">
+
+            <div className="w-[90%] mx-auto px-5 py-10 rounded-md bg-white" >
+                <div className="p-4 my-10">
+                    <div className="my-3">
+                        <h4 className="my-2 font-bold">Question Category</h4>
+                        <select
+                            onChange={(e) => setTitle(e.target.value)}
+                            name="questionTitle"
+                            required
+                            className="input"
+                        >
+                            {courseData &&
+                                courseData.map((c, index) => (
+                                    <option key={index} value={c.title}>
+                                        {c.title}
+                                    </option>
+                                ))}
+                        </select>
+                    </div>
+
+                    <div className="my-3">
+                        <h4 className="my-2 font-bold">Exam Date</h4>
+                        <input
+                            onChange={handleQuesHeader}
+                            type="date"
+                            name="examDate"
+                            value={quesHeader.examDate}
+                            required
+                            className="input"
+                        />
+                    </div>
+                    <div className="my-3">
+                        <h4 className="my-2 font-bold">Exam Time</h4>
+                        <input
+                            onChange={handleQuesHeader}
+                            type="time"
+                            name="examTime"
+                            value={quesHeader.examTime}
+                            required
+                            className="input"
+                        />
+                    </div>
+                    <div className="my-3">
+                        <h4 className="my-2 font-bold">Exam Duration</h4>
+                        <input
+                            onChange={handleQuesHeader}
+                            type="text"
+                            name="examDuration"
+                            value={quesHeader.examDuration}
+                            required
+                            placeholder="Exam Duration"
+                            className="input"
+                        />
+                    </div>
+                </div>
+
+
+                <div className="mb-6">
+                    <h2 className="text-2xl font-semibold mb-4">{editingIndex !== null ? 'Edit Question' : 'Add New Question'}</h2>
+                    <input
+                        type="text"
+                        name="questionText"
+                        value={newQuestion.questionText}
+                        onChange={handleInputChange}
+                        className="w-full p-3 border border-gray-300 rounded-md mb-4"
+                        placeholder="Enter Question"
+                    />
+                    {newQuestion.options.map((option, index) => (
+                        <div key={index} className="mb-3">
+                            <h4 className="my-2 font-bold">Option {index + 1}</h4>
+                            <input
+                                type="text"
+                                value={option}
+                                onChange={(e) => handleOptionChange(index, e.target.value)}
+                                className="input"
+                                placeholder={`Option ${index + 1}`}
+                            />
+                        </div>
+                    ))}
+
+                    <div className="my-3">
+                        <h4 className="my-2 font-bold">Correct Answer</h4>
+                        <input
+                            type="text"
+                            name="correctAns"
+                            value={newQuestion.correctAns}
+                            onChange={handleInputChange}
+                            className="input"
+                            placeholder="Enter Correct Answer"
+                            required
+                        />
+                    </div>
+
+                    <div className="my-3">
+                        <h4 className="my-2 font-bold">Answer Description</h4>
+                        <textarea
+                            rows={5}
+                            type="text"
+                            name="description"
+                            value={newQuestion.description}
+                            onChange={handleInputChange}
+                            className="input"
+                            placeholder="Correct Answer Desciption"
+                        />
+                    </div>
+                    <button
+                        onClick={handleAddQuestion}
+                        className="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-200"
                     >
-                        {courseData &&
-                            courseData.map((c, index) => (
-                                <option key={index} value={c.title}>
-                                    {c.title}
-                                </option>
-                            ))}
-                    </select>
+                        {editingIndex !== null ? 'Update Question' : 'Add Question'}
+                    </button>
                 </div>
 
-                <div className="my-3">
-                    <h2 className="my-2 font-bold">Exam Date</h2>
-                    <input
-                        onChange={handleChange}
-                        type="date"
-                        name="examDate"
-                        value={questionData.examDate}
-                        required
-                        className="input"
-                    />
-                </div>
-                <div className="my-3">
-                    <h2 className="my-2 font-bold">Exam Time</h2>
-                    <input
-                        onChange={handleChange}
-                        type="time"
-                        name="examTime"
-                        value={questionData.examTime}
-                        required
-                        className="input"
-                    />
-                </div>
             </div>
 
-            {/* Add multiple questions */}
-            <div className="bg-white p-4 rounded-md shadow-md my-6">
-                <h2 className="text-2xl font-semibold mb-4">Add a New Question</h2>
-                <label className="block mb-3">
-                    <span className="text-lg">Question:</span>
-                    <input
-                        type="text"
-                        name="qus"
-                        value={questionData.qus}
-                        onChange={handleChange}
-                        placeholder="Enter the question"
-                        required
-                        className="mt-1 p-2 border rounded w-full"
-                    />
-                </label>
-
-                <label className="block mb-3">
-                    <span className="text-lg">Options (comma-separated):</span>
-                    <input
-                        type="text"
-                        name="opt"
-                        value={questionData.opt}
-                        onChange={handleChange}
-                        placeholder="Option1, Option2, Option3, Option4"
-                        required
-                        className="mt-1 p-2 border rounded w-full"
-                    />
-                </label>
-
-                <label className="block mb-3">
-                    <span className="text-lg">Answer:</span>
-                    <input
-                        type="text"
-                        name="ans"
-                        value={questionData.ans}
-                        onChange={handleChange}
-                        placeholder="Enter the correct answer"
-                        required
-                        className="mt-1 p-2 border rounded w-full"
-                    />
-                </label>
-
-                <button
-                    onClick={handleAddMultipleQuestion}
-                    type="button"
-                    className="bg-blue-500 text-white font-semibold py-2 rounded mt-4 w-full"
-                >
-                    Add Question
-                </button>
-            </div>
 
             {/* Preview Section */}
-            <div className="bg-gray-100 p-6 rounded-md shadow-md mt-10">
-                {/* Category and Title */}
-                <h2 className="text-xl font-semibold text-gray-700 mb-4">
-                    {questionData.questionCategory || "Category"} Exam of {questionData.questionTitle || "Title"} - {questions?.length || 0} Questions
-                </h2>
 
-                <div className="flex justify-between items-center mb-4">
-                    <div className="text-lg font-medium text-gray-600">
-                        <span className="font-bold">Date: </span>
-                        {questionData.examDate || "No Date Available"}
-                    </div>
-                    <div className="text-lg font-medium text-gray-600">
-                        <span className="font-bold">Time: </span>
-                        {questionData.examTime || "No Time Available"}
-                    </div>
-                </div>
-                {questions.length > 0 ? (
+            <div className="my-10">
+                <h2 className="text-2xl font-semibold mb-4">Added Questions</h2>
+                {questions.length === 0 ? (
+                    <p className="text-gray-500">No questions added yet.</p>
+                ) : (
                     questions.map((q, index) => (
-                        <div key={index} className="mb-6">
-                            <h3 className="text-lg font-bold mb-2">
-                                <span className="mr-2">{q.sl}.</span> {q.qus}
-                            </h3>
-                            <ul className="ml-5 list-disc font-semibold mb-1">
-                                {q.opt.map((o, i) => (
-                                    <li key={i}>
-                                        <span className="mr-2">
-                                            {String.fromCharCode(65 + i)}.
-                                        </span>
-                                        {o}
-                                    </li>
+                        <div key={q.questionId} className="bg-gray-50 p-4 rounded-md mb-4 shadow-md">
+                            <p className="font-semibold"> <strong>{index + 1 + " ."}</strong> {q.questionText}</p>
+                            <ul className="ml-4 mt-2 space-y-2">
+                                {q.options.map((opt, idx) => (
+                                    <li key={idx} className="text-gray-700">
+                                        <strong>{String.fromCharCode(97 + idx)}. </strong>
+                                        {opt}</li>
                                 ))}
                             </ul>
-                            <p className="text-green-600 font-semibold">
-                                <strong>Answer:</strong> {q.ans}
-                            </p>
+                            <p className="mt-2 text-sm text-gray-500"> <strong className="text-blue-900">Correct Answer:</strong> {q.correctAns}</p>
+                            <p className="mt-2 text-sm text-gray-500"> <strong className="text-blue-900">Description:</strong> {q.description}</p>
+                            <button
+                                onClick={() => handleEditQuestion(index)}
+                                className="mt-4 py-1 px-4 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-200"
+                            >
+                                Edit
+                            </button>
                         </div>
                     ))
-                ) : (
-                    <p>No questions added yet.</p>
                 )}
-                <button
-                    onClick={handleSubmitPaper}
-                    className="bg-green-500 text-white font-semibold py-3 rounded mt-6 w-full"
-                >
-                    {
-                        loading ? "Waiting..." : "  Submit Question Paper"
-                    }
-                </button>
+            </div>
+
+            <div onClick={handleQuestionSubmit} className="my-5">
+                <button className="w-full py-3 bg-blue-500 text-white font-bold rounded-md">Submit Question Paper</button>
             </div>
         </div>
     );

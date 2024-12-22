@@ -110,7 +110,7 @@ export default function CourseTable({ courseData }) {
     if (!isMounted) return null;
 
     return (
-        <div className="p-4 bg-white rounded shadow-md">
+        <div className="p-4 rounded shadow-md">
             <h2 className="text-xl font-bold mb-4">Course Table</h2>
             <DataTable
                 columns={columns}

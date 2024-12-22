@@ -12,7 +12,7 @@ export default async function CourseAllPage() {
     }
 
     return (
-        <div className="bg-gray-100 min-h-screen py-10  ">
+        <div className=" bg-gray-100 rounded-md  min-h-screen py-10  ">
             <CourseTable courseData={result} />
         </div>
     )

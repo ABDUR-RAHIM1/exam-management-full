@@ -12,7 +12,7 @@ export default async function ManagePurchaseCourse() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-10">
+        <div className="container  bg-gray-100 rounded-md mx-auto px-4 py-10">
             <PurchaseTable data={result} />
         </div>
     );

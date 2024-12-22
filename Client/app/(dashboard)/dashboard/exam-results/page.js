@@ -11,7 +11,7 @@ export default async function ExamResultAdmin() {
         return <NoDataFound />
     }
     return (
-        <div>
+        <div className='bg-gray-100 rounded-md'>
             <ResultsTable data={result} />
         </div>
     )

@@ -66,7 +66,7 @@ console.log(formData)
                 books: booksArr,
                 note: noteArr
             }
-console.log(data)
+
             if (isUpdateData) {
                 alert("APi Not connect for Edit ")
                  return
@@ -96,8 +96,8 @@ console.log(data)
         return "text-red-500";
     };
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-            <div className="bg-white p-8 rounded shadow-md w-full max-w-2xl">
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="bg-gray-100 p-8 rounded shadow-md w-full max-w-2xl">
                 <h1 className="text-2xl font-bold mb-6 text-gray-700">
                     {
                         isUpdateData ? "Edit The Course" : "Add New Course"

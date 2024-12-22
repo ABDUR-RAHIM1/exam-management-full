@@ -13,7 +13,7 @@ export default async function AllQuestionsPage() {
     }
 
     return (
-        <div>
+        <div className=' bg-gray-100 rounded-md'>
             <QuestionTable data={result} />
         </div>
     )

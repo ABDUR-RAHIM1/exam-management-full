@@ -110,15 +110,7 @@ export default function QuestionTable({ data }) {
                 highlightOnHover
                 striped
                 responsive
-                customStyles={{
-                    headCells: {
-                        style: {
-                            backgroundColor: "#1e3a8a82",
-                            fontWeight: "bold",
-                            textAlign: "left",
-                        },
-                    },
-                }}
+               
             />
         </div>
     );

@@ -66,7 +66,7 @@ export default function ResultsTable({ data }) {
         },
     ]
     return (
-        <div className="p-4 bg-white rounded shadow-md">
+        <div className="p-4  rounded shadow-md">
             <h2 className="text-xl font-bold mb-4">All Results</h2>
             <DataTable
                 columns={columns}

@@ -75,9 +75,9 @@ export default function PurchaseTable({ data }) {
     ];
 
     return (
-        <div className="mt-6 w-full overflow-x-scroll">
+        <div className="mt-6 py-5 w-full overflow-x-scroll">
+            <h2 className="text-xl font-bold mb-4">{`Manage Purchase Courses ${courseCount} `}</h2>
             <DataTable
-                title={`Manage Purchase Courses ${courseCount} `}
                 columns={columns}
                 data={data}
                 pagination
