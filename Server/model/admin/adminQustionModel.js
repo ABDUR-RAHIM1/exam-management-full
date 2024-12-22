@@ -11,7 +11,7 @@ const QuestionDataSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    course: {
+    courseId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
         required: true,
@@ -21,6 +21,10 @@ const QuestionDataSchema = new mongoose.Schema({
         required: true,
     },
     examTime: {
+        type: String,
+        required: true,
+    },
+    examDuration: {
         type: String,
         required: true,
     },

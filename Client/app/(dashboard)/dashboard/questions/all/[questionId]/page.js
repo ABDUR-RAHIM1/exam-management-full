@@ -17,6 +17,7 @@ export default async function QuestionsDetails({ params }) {
         questionTitle,
         examDate,
         examTime,
+        examDuration,
         questions,
         createdAt,
     } = result;
@@ -42,6 +43,9 @@ export default async function QuestionsDetails({ params }) {
                         <strong>Exam Time:</strong> {examTime}
                     </p>
                     <p className="text-gray-600">
+                        <strong>Exam Duration:</strong> {examDuration} Minute
+                    </p>
+                    <p className="text-gray-600">
                         <strong>Created At:</strong>{' '}
                         {new Date(createdAt).toLocaleString('en-US')}
                     </p>
@@ -53,7 +57,7 @@ export default async function QuestionsDetails({ params }) {
                     </h2>
                     {result && questions.length > 0 ? (
                         <div className="space-y-6">
-                            { questions.map((question, index) => (
+                            {questions.map((question, index) => (
                                 <div
                                     key={index}
                                     className="border rounded-md p-4 bg-gray-50"
@@ -61,19 +65,25 @@ export default async function QuestionsDetails({ params }) {
                                     <p className="text-gray-800 font-semibold mb-2">
                                         Q{index + 1}: {question.questionText}
                                     </p>
-                                    <ul className="list-disc pl-6 mb-2">
+                                    <ul className=" mb-2">
                                         {question.options.map((option, idx) => (
                                             <li
                                                 key={idx}
                                                 className="text-gray-700"
                                             >
+                                                <strong className='mx-2' >{String.fromCharCode(97 + idx)}.</strong>
                                                 {option}
                                             </li>
                                         ))}
                                     </ul>
-                                    <p className="text-green-600 font-medium">
-                                        Correct Answer: {question.answer}
-                                    </p>
+                                    <div className=' font-bold '>
+                                        <p className='text-blue-500'>
+                                            Correct Answer: {question.correctAns}
+                                        </p>
+                                        <p className='text-blue-500'>
+                                            Clarification: {question.description}
+                                        </p>
+                                    </div>
                                 </div>
                             ))}
                         </div>

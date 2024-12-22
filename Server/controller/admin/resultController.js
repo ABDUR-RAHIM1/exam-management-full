@@ -9,7 +9,8 @@ const submitQuestionAndMakeResult = async (req, res) => {
             questionTitle,
             questions,
             rightAnswers,
-            wrongAnswers
+            wrongAnswers,
+            totalMark
         } = req.body;
 
         // Check if a submission already exists for the user, course, and title
@@ -35,6 +36,7 @@ const submitQuestionAndMakeResult = async (req, res) => {
             questions,
             rightAnswers,
             wrongAnswers,
+            totalMark,
             isComplete: true
         });
 
@@ -43,7 +45,7 @@ const submitQuestionAndMakeResult = async (req, res) => {
             message: "Question submitted successfully."
         });
 
-    } catch (error) {
+    } catch (error) { 
         res.status(500).json({
             message: "Internal Server Error",
             error: error.message

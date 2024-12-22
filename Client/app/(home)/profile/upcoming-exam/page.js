@@ -9,7 +9,7 @@ function UpcomingExamPage() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetch("http://localhost:8500/api/admin/question/details/676533d3d19f9501c7509108")
+        fetch("http://localhost:8500/api/admin/question/details/67680ca19fd172a254429b5d")
             .then((res) => res.json())
             .then((data) => {
                 console.log(data)
@@ -38,7 +38,8 @@ function UpcomingExamPage() {
             questionText: q.questionText,
             options: q.options,
             selectedAns: q.selectedAns,
-            correctAnswer: q.answer,
+            correctAns: q.correctAns,
+            clarification: q.clarification || q.description, /// afer delete decription
             isCorrect: q.selectedAns === q.answer
         }));
 
@@ -52,12 +53,13 @@ function UpcomingExamPage() {
         const resultData = {
             questionCategory: formData.questionCategory,
             questionTitle: formData.questionTitle,
-            courseId: formData.course,
+            courseId: formData.courseId,
             questions: result,// Sending all question data with answers and correctness
             rightAnswers: rightAnswers, // Total correct answers
             wrongAnswers: wrongAnswers, // Total wrong answers
             totalMark: totalMark
         };
+        console.log(resultData)
 
         try {
             const { status, result } = await postDataHandler(resultData, "POST", "/results/submit_question")
@@ -101,6 +103,9 @@ function UpcomingExamPage() {
                     </p>
                     <p className="mb-2">
                         <span className="font-semibold">Exam Time:</span> {formData.examTime}
+                    </p>
+                    <p className="mb-2">
+                        <span className="font-semibold">Duration:</span> {formData.examDuration} minute
                     </p>
                 </div>
 

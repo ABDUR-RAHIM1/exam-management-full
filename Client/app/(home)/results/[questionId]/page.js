@@ -10,6 +10,7 @@ export default async function ResultsDetails({ params }) {
     const { questionId } = params
     const getDetailsApiEndpoint = `${getResultById + questionId}`
     const { status, result } = await getDataById(getDetailsApiEndpoint);
+ 
 
     if (status !== 200 || !result) {
         return <NoDataFound />
@@ -50,6 +51,9 @@ export default async function ResultsDetails({ params }) {
                             <h4 className="text-xl font-semibold text-gray-600 mt-2">
                                 Course :  {result.questionTitle}
                             </h4>
+                            <h4 className="text-xl font-semibold text-gray-600 mt-2">
+                                Total Mark :  {result.totalMark}
+                            </h4>
 
                             {/* Date and Time */}
                             <div className="flex items-center justify-end mt-4 text-sm text-gray-500">
@@ -80,10 +84,10 @@ export default async function ResultsDetails({ params }) {
                                                 <span
                                                     className={`px-3 py-2 rounded-md text-sm font-medium 
                                                 ${o === q.selectedAns
-                                                            ? q.selectedAns === q.correctAnswer
+                                                            ? q.selectedAns === q.correctAns
                                                                 ? 'bg-green-100 text-green-700 border border-green-300'
                                                                 : 'bg-red-100 text-red-700 border border-red-300'
-                                                            : o === q.correctAnswer
+                                                            : o === q.correctAns
                                                                 ? 'bg-blue-100 text-blue-700 border border-blue-300'
                                                                 : 'bg-gray-200 text-gray-700'
                                                         }`}
@@ -92,7 +96,7 @@ export default async function ResultsDetails({ params }) {
                                                 </span>
                                                 {o === q.selectedAns && (
                                                     <span className="ml-2 text-lg">
-                                                        {q.selectedAns === q.correctAnswer ? (
+                                                        {q.selectedAns === q.correctAns ? (
                                                             <FaCheck className="text-green-500" />
                                                         ) : (
                                                             <MdClose className="text-red-500" />
@@ -102,9 +106,11 @@ export default async function ResultsDetails({ params }) {
                                             </li>
                                         ))}
                                     </ul>
-                                    {/* <div className="bg-gray-100 mt-4 p-3 rounded text-sm text-gray-600">
-                                    <p>✅ Solved</p>
-                                </div> */}
+                                    <div className="bg-green-100 mt-4 p-3 rounded text-sm ">
+                                        <p className='text-green-600'>
+                                            {q.clarification}
+                                        </p>
+                                    </div>
                                 </div>
                             ))}
                         </div>

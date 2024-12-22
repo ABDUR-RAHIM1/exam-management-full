@@ -48,22 +48,6 @@ export default function AddQuestion() {
     }, []);
 
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setQuestionData({ ...questionData, [name]: value });
-    // };
-
-    // const handleAddMultipleQuestion = () => {
-    //     const optionsArray = questionData.opt.split(",").map(opt => opt.trim());
-    //     const newQuestion = {
-    //         ...questionData,
-    //         sl: questions.length + 1,
-    //         opt: optionsArray
-    //     };
-    //     setQuestions([...questions, newQuestion]);
-    //     setQuestionData({ ...questionData, qus: "", opt: "", ans: "" }); // Reset question inputs
-    // };
-
     // const handleSubmitPaper = async () => {
     //     setLoading(true)
     //     try {
@@ -127,7 +111,7 @@ export default function AddQuestion() {
         options: ['', '', '', ''],
         selectedAns: '',
         correctAns: '',
-        description: ""
+        clarification: ""
     });
     const [editingIndex, setEditingIndex] = useState(null);  // Track which question is being edited
     // Handle input changes for question text and other fields
@@ -171,7 +155,7 @@ export default function AddQuestion() {
             options: ['', '', '', ''],
             selectedAns: '',
             correctAns: '',
-            description: ''
+            clarification: ''
         });
     };
 
@@ -183,6 +167,7 @@ export default function AddQuestion() {
     console.log(quesHeader)
     // Submit the data
     const handleQuestionSubmit = async () => {
+        setLoading(true)
         const dataToSend = {
             questionCategory: quesHeader.questionCategory,
             questionTitle: quesHeader.questionTitle,
@@ -194,10 +179,17 @@ export default function AddQuestion() {
         };
 
         try {
-            // You can replace this part with your API call
-            console.log('Response:', dataToSend);
+            const { status, result } = await postDataHandler(dataToSend, "POST", questionAdd)
+
+            if (status === 201) {
+                toast.success(result.message)
+            } else if (status !== 200 || status !== 201) {
+                toast.error(result.message)
+            }
         } catch (error) {
             console.error('Error:', error);
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -268,7 +260,7 @@ export default function AddQuestion() {
                         name="questionText"
                         value={newQuestion.questionText}
                         onChange={handleInputChange}
-                        className="w-full p-3 border border-gray-300 rounded-md mb-4"
+                        className="input"
                         placeholder="Enter Question"
                     />
                     {newQuestion.options.map((option, index) => (
@@ -298,12 +290,12 @@ export default function AddQuestion() {
                     </div>
 
                     <div className="my-3">
-                        <h4 className="my-2 font-bold">Answer Description</h4>
+                        <h4 className="my-2 font-bold">Answer Clarification</h4>
                         <textarea
                             rows={5}
                             type="text"
-                            name="description"
-                            value={newQuestion.description}
+                            name="clarification"
+                            value={newQuestion.clarification}
                             onChange={handleInputChange}
                             className="input"
                             placeholder="Correct Answer Desciption"
@@ -338,7 +330,7 @@ export default function AddQuestion() {
                                 ))}
                             </ul>
                             <p className="mt-2 text-sm text-gray-500"> <strong className="text-blue-900">Correct Answer:</strong> {q.correctAns}</p>
-                            <p className="mt-2 text-sm text-gray-500"> <strong className="text-blue-900">Description:</strong> {q.description}</p>
+                            <p className="mt-2 text-sm text-gray-500"> <strong className="text-blue-900">Clarification:</strong> {q.clarification}</p>
                             <button
                                 onClick={() => handleEditQuestion(index)}
                                 className="mt-4 py-1 px-4 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-200"
@@ -351,7 +343,11 @@ export default function AddQuestion() {
             </div>
 
             <div onClick={handleQuestionSubmit} className="my-5">
-                <button className="w-full py-3 bg-blue-500 text-white font-bold rounded-md">Submit Question Paper</button>
+                <button className="w-full py-3 bg-blue-500 text-white font-bold rounded-md">
+                    {
+                        loading ? "Uploading . . . " : "Submit Question Paper"
+                    }
+                </button>
             </div>
         </div>
     );

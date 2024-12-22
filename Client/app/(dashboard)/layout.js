@@ -27,11 +27,9 @@ export default function DashboardLayout({ children }) {
                             <Sidebar />
                         </aside>
                         <main className="flex-1 pt-28 px-5  bg-white rounded-md overflow-y-auto">
-                            {children}
-                            <div style={{ height: "1000px" }}></div>
+                            {children} 
                         </main>
                     </div>
-
 
                 </Context>
             </body>
