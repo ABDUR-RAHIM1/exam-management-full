@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     photo: { type: String, default: "" },
     collage: { type: String },
     address: { type: String },
+    role: { type: String, default: "user" },
     isPayment: { type: Boolean, default: false }
 }, { timestamps: true });
 

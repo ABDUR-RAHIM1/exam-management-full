@@ -7,7 +7,8 @@ const publicCourseGet = "/admin/course/all"
 /// user (use token)
 const purchaseCourseAll = "/user/purchase"  // admin dashboard - page -(course/purchase)
 const purchaseCourseMe = "/user/purchase/me"
-
+const putBlogStatus = "/user/blog/status/"
+const deleteBlog = "/user/blogs/"
 
 // admins 
 const adminLogin = "/admin/auth/login"   // course/add (page)
@@ -31,7 +32,7 @@ export {
     // public end
 
     // user start 
-    purchaseCourseAll, purchaseCourseMe,
+    purchaseCourseAll, purchaseCourseMe, putBlogStatus, deleteBlog,
     // user end 
 
 

@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const blogModelSchema = new mongoose.Schema(
     {
         title: {
-            type: String, 
-            default :"",
+            type: String,
+            default: "",
             trim: true,
         },
         description: {
@@ -21,11 +21,10 @@ const blogModelSchema = new mongoose.Schema(
             default: "pending",
             enum: ["pending", "accept", "reject"]
         },
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: [true, "User ID is required"],
-        },
+        author: {
+            type: Object,
+            required: [true, "Author is required"],
+        }, 
     },
     { timestamps: true }
 );

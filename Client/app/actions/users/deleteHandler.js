@@ -3,8 +3,7 @@ import userToken from "./getToken";
 const { API_URL } = require("@/app/constans/constans")
 
 export const deleteHandler = async (endpoint) => {
-    const token = userToken();
-    console.log(token)
+    const token = userToken(); 
     try {
         const res = await fetch(API_URL + endpoint, {
             method: "DELETE",

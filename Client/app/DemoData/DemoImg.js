@@ -9,7 +9,7 @@ const dummyPdf = "https://img.freepik.com/free-psd/vertical-poster-template-prof
 const demoProfilePhoto = "https://img.freepik.com/free-vector/smiling-young-man-glasses_1308-174702.jpg?t=st=1728188583~exp=1728192183~hmac=7cefb6bcc9da75c293565c1fcaaa4fcc44aedb172d2cd79da558f9d3c2a04b96&w=740"
 
 import routineeImg from "@/public/Images/routinee.jpg"
-
+import noImg from "@/public/Images/no-image.png"
 export {
-    demoImg, demoImg2, demoImg3, dummyPdf, demoProfilePhoto, routineeImg
+    demoImg, demoImg2, demoImg3, dummyPdf, demoProfilePhoto, routineeImg,noImg
 }

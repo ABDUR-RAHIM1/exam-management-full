@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { demoImg } from "@/app/DemoData/DemoImg";
+import { demoImg, noImg } from "@/app/DemoData/DemoImg";
 import { getDataHandler } from "@/app/actions/users/getData";
 import { MdPerson, MdAccessTime } from "react-icons/md";
 import Link from "next/link";
@@ -11,7 +11,7 @@ export default async function BlogDetails({ params }) {
     const { result } = await getDataHandler(blogApiMe)
     const BlogDetails = result && result.find(blog => blog._id === blogId)
 
-    const { title, description, photo, user, createdAt } = BlogDetails
+    const { title, description, photo, author, createdAt } = BlogDetails
     const titleWords = title.split(/\s+/).map(word => word.toLowerCase());
 
     const relatedPosts = result.filter(blog => {
@@ -28,11 +28,11 @@ export default async function BlogDetails({ params }) {
             <div className="flex-1 bg-white p-6 rounded-lg shadow-lg">
                 {/* Blog Image */}
                 <Image
-                    src={photo || demoImg}
+                    src={photo || noImg}
                     alt="Blog Image"
                     width={800}
                     height={500}
-                    loading="lazy" 
+                    loading="lazy"
                     className="w-full h-auto max-h-[500px] object-cover rounded-md mb-6"
                 />
 
@@ -40,7 +40,7 @@ export default async function BlogDetails({ params }) {
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-gray-600 mb-6 gap-4">
                     <p className="font-medium text-red-600 text-lg flex items-center gap-2">
                         <MdPerson className="text-2xl" />
-                        <span>Author: {user.name}</span>
+                        <strong className=" capitalize">Author: {author.name} <span className=" text-blue-900">{`(${author.role})`}</span></strong>
                     </p>
                     <p className="text-red-600 text-lg flex items-center gap-2">
                         <MdAccessTime className="text-2xl" />

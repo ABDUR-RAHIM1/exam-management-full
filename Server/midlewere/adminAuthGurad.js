@@ -17,6 +17,7 @@ const adminAuthGuard = async (req, res, next) => {
         const decoded = Jwt.verify(token, ADMIN_TOKEN_SECRET);
         req.adminId = decoded.adminId;
         next();
+        
     } catch (error) {
         res.status(401).json({
             message: "Authentication Failed",

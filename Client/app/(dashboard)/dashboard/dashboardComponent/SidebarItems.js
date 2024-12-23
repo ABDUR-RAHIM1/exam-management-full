@@ -44,7 +44,13 @@ const items = [
             { icon: <MdAdd />, item: "Add Modaretor", path: "/dashboard/people/add-modaretor" },
             { icon: <GrUserAdmin />, item: "Modaretor List", path: "/dashboard/people/modaretor-list " },
             { icon: <BsFillPeopleFill />, item: "Users", path: "/dashboard/people/users-list " },
-            { icon: <BsFillPeopleFill />, item: "Blogs", path: "/dashboard/people/blogs " },
+        ],
+    },
+    {
+        parentItem: "Blogs",
+        childItem: [
+            { icon: <BsFillPeopleFill />, item: "Admin Blogs", path: "/dashboard/people/blogs/admin " },
+            { icon: <BsFillPeopleFill />, item: "Public Blogs", path: "/dashboard/people/blogs/public " },
         ],
     },
     {
