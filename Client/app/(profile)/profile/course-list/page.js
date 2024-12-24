@@ -1,9 +1,9 @@
-import React from 'react';
-import CourseCard from '../profileComponent/CourseCard'; // Ensure this is the correct path
+import React from 'react'; 
 import { getDataHandler } from '@/app/actions/users/getData';
 import { publicCourseGet } from '@/app/constans/constans';
 import NoDataFound from '@/app/components/Globals/NoDataFound';
 import Cart from '@/app/components/Globals/Cart';
+import CourseCard from './CourseCard'; 
 
 export default async function CourseListHomePage() {
     const { result } = await getDataHandler(publicCourseGet)

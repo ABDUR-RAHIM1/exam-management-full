@@ -1,7 +1,7 @@
 import { getDataHandler } from '@/app/actions/users/getData';
-import React from 'react';
-import PurcheseCard from '../profileComponent/PurchesCard.';
+import React from 'react'; 
 import { purchaseCourseMe } from '@/app/constans/constans';
+import PurcheseCard from './PurcheseCard';
 
 export default async function CourseEnrolment() {
     const { result } = await getDataHandler(purchaseCourseMe);

@@ -1,56 +1,107 @@
 
 import mongoose from "mongoose";
 import purchaseModel from "../../model/users/purchaseModel.js";
+import usersModel from "../../model/users/usersModel.js";
+import CourseModel from "../../model/admin/adminCourseModel.js";
 
 // Create a new purchase record
+// export const createPurchase = async (req, res) => {
+//     try {
+//         const { userId } = req;
+//         const { course, paymentStatus } = req.body;
+
+//         // Extract titles from new courses
+//         const newCourseTitles = course.map(c => c.title);
+
+//         const purchasedCourses = await purchaseModel.find({ user: userId });
+
+//         const existingTitles = [];
+
+//         purchasedCourses.forEach(element => {
+//             element.course.forEach(allCorces => {
+//                 if (allCorces.title) {
+//                     existingTitles.push(allCorces.title)
+//                 }
+//             });
+//         });
+
+
+//         const matchingTitles = newCourseTitles.filter(title => existingTitles.includes(title));
+
+//         if (matchingTitles.length > 0) {
+//             return res.status(400).json({ message: `You have already purchased the following courses: ${matchingTitles.join(', ')}` });
+//         }
+
+//         // Proceed with creating the purchase
+//         const newPurchase = new purchaseModel({
+//             course,
+//             user: userId,
+//             paymentStatus,
+//         });
+
+//         const purchase = await newPurchase.save();
+//         await User.findByIdAndUpdate(userId, { $set: { purchase: purchase._id } });
+
+//         res.status(201).json({ message: "Purchase successfully" });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: "An error occurred while creating the purchase" });
+//     }
+// };
+
 export const createPurchase = async (req, res) => {
     try {
-        const { userId } = req;
-        const { course, paymentStatus } = req.body; 
+        const { userId } = req; // Already authenticated
+        const { courseId, paymentStatus } = req.body;
 
-        // Extract titles from new courses
-        const newCourseTitles = course.map(c => c.title);
+        // Run both queries concurrently
+        const [user, course] = await Promise.all([
+            usersModel.findById(userId),
+            CourseModel.findById(courseId)
+        ]);
 
-        const purchasedCourses = await purchaseModel.find({ user: userId });
-
-        const existingTitles = [];
-
-        purchasedCourses.forEach(element => {
-            element.course.forEach(allCorces => {
-                if (allCorces.title) {
-                    existingTitles.push(allCorces.title)
-                }
-            });
-        });
-
-
-        const matchingTitles = newCourseTitles.filter(title => existingTitles.includes(title));
-
-        if (matchingTitles.length > 0) {
-            return res.status(400).json({ message: `You have already purchased the following courses: ${matchingTitles.join(', ')}` });
+        if (!course) {
+            return res.status(404).json({ message: "Course Not Found!" });
         }
 
-        // Proceed with creating the purchase
+        if (!user) {
+            return res.status(404).json({ message: "User Not Found!" });
+        }
+
+        // Check if the user has already purchased a course
+        if (user.purchase) {
+            return res.status(400).json({ message: "Already Purchased a Course" });
+        }
+
+        // Create a new purchase
         const newPurchase = new purchaseModel({
             course,
             user: userId,
             paymentStatus,
         });
 
-        await newPurchase.save();
-        res.status(201).json({ message: "Purchase successfully" });
+        const purchase = await newPurchase.save();
+
+        // Update user's purchase field
+        await usersModel.findByIdAndUpdate(userId, { $set: { purchase: purchase._id } });
+
+        res.status(201).json({ message: "Purchase successful" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "An error occurred while creating the purchase" });
+        res.status(500).json({ message: "An error occurred while processing the purchase" });
     }
 };
+
 
 
 
 // Get all purchases (for admin)
 export const getAllPurchases = async (req, res) => {
     try {
-        const purchases = await purchaseModel.find().populate("user", "name emailPhone address"); // Populating user details
+        const purchases = await purchaseModel.find()
+            .populate("user", "name emailPhone address")
+            .populate("course")
+
         res.status(200).json(purchases);
     } catch (error) {
         console.error(error);

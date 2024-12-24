@@ -126,8 +126,10 @@ export default function BlogTable({ blogs }) {
             sortable: true,
         },
         {
-            name: "User",
-            selector: (row) => row.author?.name,
+            name: "Author",
+            selector: (row) => <p>
+                {row.author?.name} <small>({row.author?.role})</small>
+            </p>,
         },
         {
             name: "Created At",

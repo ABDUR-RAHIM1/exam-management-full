@@ -41,6 +41,10 @@ const courseSchema = new mongoose.Schema({
         type: [String],
         required: false
     },
+    questions: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question"
+    }],
     createdAt: {
         type: Date,
         default: Date.now

@@ -10,7 +10,7 @@ router.post("/blogs", authGuard, createBlog); /// ok for user
 router.post("/blogs/admin", adminAuthGuard, createAdminBlog); ///  for admin
 router.get("/blogs", getAllBlogs);  // the route for admin (public) ok 
 router.get("/blog/me", authGuard, getuserBlogById); // ok
-router.get("/blog/admin/me", adminAuthGuard, getAdminBlogById); //  
+router.get("/blog/admin/me", adminAuthGuard, getAdminBlogById); // 
 router.put("/blogs/:id", authGuard, updateBlog); // ok 
 router.put("/blog/status/:blogId", updateBlogStatusAdmin) ///  ok 
 router.delete("/blogs/:id", authGuard, deleteBlog); /// ok user

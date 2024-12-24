@@ -9,3 +9,16 @@ admin :
   "role" :"admin",
   "password": "myadmin"
 }
+
+
+tasks:
+1. user login success hole naviagte kore profile dashboard a niye jabe
+2 . user login page er nicher btn ti thik korte hbe
+3 . dashboard protected korte hbe
+4. upocming exam page a jediner exam date ace se onujayi ajker date compire kore time er shathe compire kore match kore koto time baki ace seta dekhate hbe . ba je time a exam ace seta animantion kore dekhate hbe , abong oi time a sei question ti open hbe
+5. dashboard layhout ti resposive korte hbe (pore)
+6 . user er payment method add korte hbe se onujayi access dite hbe 
+7. dashboard er home page ti bivinno information diye sajate hbe
+8. resposive korte hbe , bivinno card etc
+/// blogs/admin page theke adminGetHandler add korte hbe , akhn user handler er jonno blog show kortece na 
+/// admin er data get/post / update korte jekhane adminToken use kort hbe tar jonno adminHandlerWithToken banate hbe

@@ -1,5 +1,5 @@
 import React from 'react';
-import EnrolBtn from '../profile/profileComponent/EnrolBtn';
+import EnrolBtn from '../profile-2/profileComponent/EnrolBtn';
 
 
 // uses home page

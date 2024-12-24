@@ -66,7 +66,9 @@ export const loginUser = async (req, res) => {
 export const getUser = async (req, res) => {
     const { userId } = req;
     try {
-        const user = await usersModel.findById(userId).select('-password');  // Find user and exclude password
+        const user = await usersModel.findById(userId)
+            .select('-password')  // Find user and exclude password
+            .populate("purchase")
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -80,7 +82,9 @@ export const getUser = async (req, res) => {
 // Get User All (By Admin)
 export const getAllUser = async (req, res) => {
     try {
-        const user = await usersModel.find().select('-password');
+        const user = await usersModel.find()
+            .select('-password')
+            .populate("purchase")
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }

@@ -5,8 +5,10 @@ export const API_URL = "http://localhost:8500/api";
 const publicCourseGet = "/admin/course/all"
 
 /// user (use token)
+const getMyProfileInfo = "/user/me"
 const purchaseCourseAll = "/user/purchase"  // admin dashboard - page -(course/purchase)
 const purchaseCourseMe = "/user/purchase/me"
+const getMyblog = "/user/blog/me";
 const putBlogStatus = "/user/blog/status/"
 const deleteBlog = "/user/blogs/"
 
@@ -18,7 +20,7 @@ const questionAdd = "/admin/question/add"
 const questionGetAll = "/admin/question/all"
 const questionDetailsById = "/admin/question/details/"
 const questionDelete = "/admin/question/delete/"
-
+const getAdminModaretorBlogs = "/user/blog/admin/me"
 
 // result / questions
 const getResultAll = "/results/get/all"
@@ -32,7 +34,7 @@ export {
     // public end
 
     // user start 
-    purchaseCourseAll, purchaseCourseMe, putBlogStatus, deleteBlog,
+    getMyProfileInfo, purchaseCourseAll, purchaseCourseMe, getMyblog, putBlogStatus, deleteBlog,
     // user end 
 
 
@@ -43,7 +45,7 @@ export {
     questionGetAll,
     questionDetailsById,
     questionDelete,
-
+    getAdminModaretorBlogs,
 
     /// results / questions
     getResultAll, getResultMe, getResultById

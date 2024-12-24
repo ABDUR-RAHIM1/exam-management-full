@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const purchaseSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    course: { type: Array, required: true },
+    course: { type: mongoose.Schema.Types.ObjectId, ref: "Course", required: true },
     purchaseDate: { type: Date, default: Date.now },
     paymentStatus: { type: Boolean, required: true },
     isEnrolled: { type: Boolean, default: true },

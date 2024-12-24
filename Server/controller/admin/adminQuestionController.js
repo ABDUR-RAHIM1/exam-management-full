@@ -1,3 +1,4 @@
+import CourseModel from "../../model/admin/adminCourseModel.js";
 import QuestionModel from "../../model/admin/adminQustionModel.js";
 
 const createQuestion = async (req, res) => {
@@ -8,6 +9,8 @@ const createQuestion = async (req, res) => {
         if (!questionCategory || !questionTitle || !courseId || !examDate || !examTime || !questions || !examDuration || questions.length === 0) {
             return res.status(400).json({ message: "All fields are required!" });
         }
+
+        const course = await CourseModel.findById(courseId);
 
         // Create new Question Data
         const newQuestionData = new QuestionModel({
@@ -21,10 +24,16 @@ const createQuestion = async (req, res) => {
         });
 
         // Save to database
-        const savedData = await newQuestionData.save();
+        const savedQuestion = await newQuestionData.save();
+
+        // Push the new question ID to the course's questions array
+        course.questions.push(savedQuestion._id);
+ 
+        await course.save();
+        
         return res.status(201).json({
             message: "Question added successfully!",
-            data: savedData,
+            data: savedQuestion,
         });
     } catch (error) {
         console.log(error)

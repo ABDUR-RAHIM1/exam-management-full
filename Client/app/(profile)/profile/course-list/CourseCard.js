@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react';   
+import EnrolBtn from '@/app/components/Globals/EnrolBtn';
 import CourseActions from './CourseActions';
-import EnrolBtn from './EnrolBtn';
 
 
 /// uses profile
 const CourseCard = (props) => {
     const { category, title, desc, books, duration, schedule, regularPrice, offerPrice, note } = props.courseData;
-    
+
     return (
         <div className="w-[31%] bg-white shadow-md rounded-lg overflow-hidden">
             <div className="p-6">

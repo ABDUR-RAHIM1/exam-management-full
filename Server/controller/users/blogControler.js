@@ -89,7 +89,12 @@ export const getAdminBlogById = async (req, res) => {
         const { adminId } = req;
         const convertUserId = new ObjectId(adminId);
 
-        const blogs = await Blog.find({ "author.adminId": convertUserId })
+        const blogs = await Blog.find({
+            $or: [
+                { "author.role": "admin" },
+                { "author.role": "modaretor" }
+            ]
+        })
             .sort({ createdAt: -1 });
 
         if (blogs && blogs.length <= 0) {

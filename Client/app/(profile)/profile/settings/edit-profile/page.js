@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const AddProfile = () => {
+const EditProfile = () => {
     const { manageData } = useContext(contextApi);
     const { uploader, uploadResponse, imgUrl } = fileUploader();
     const { message, status } = uploadResponse;
@@ -162,4 +162,4 @@ const AddProfile = () => {
     );
 };
 
-export default AddProfile;
+export default EditProfile;

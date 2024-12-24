@@ -5,7 +5,7 @@ import React, { useContext } from "react";
 
 export default function Routinee() {
     const { manageData } = useContext(contextApi);
-    
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
             {/* Title */}

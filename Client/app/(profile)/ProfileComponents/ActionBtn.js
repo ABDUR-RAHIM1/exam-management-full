@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation'
 import React, { useContext } from 'react'
 
 export default function ActionsBtn({ userData }) {
-    const {setManageData } = useContext(contextApi);
-    const router = useRouter() 
+    const { setManageData } = useContext(contextApi);
+    const router = useRouter()
     const handleEditProfile = () => {
         setManageData(userData)
-        router.push("/profile/edit-profile") 
+        router.push("/profile/settings/edit-profile")
     }
 
     return (

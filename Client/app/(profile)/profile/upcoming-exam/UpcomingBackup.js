@@ -8,15 +8,18 @@ function UpcomingExamPage() {
     const [formData, setFormData] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        fetch("http://localhost:8500/api/admin/question/details/67683754dd16677716fe52b5")
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data)
-                setFormData(data);
-            })
-            .catch((err) => console.error("Error fetching questions:", err));
-    }, []);
+    // useEffect(() => {
+    //     fetch("http://localhost:8500/api/admin/question/details/67683754dd16677716fe52b5")
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             console.log(data)
+    //             setFormData(data);
+    //         })
+    //         .catch((err) => console.error("Error fetching questions:", err));
+    // }, []);
+
+
+
 
 
     const handleChange = (selectedAnsIndex, questionId) => {
@@ -61,7 +64,6 @@ function UpcomingExamPage() {
             wrongAnswers: wrongAnswers, // Total wrong answers
             totalMark: totalMark
         };
-        console.log(resultData)
 
         try {
             const { status, result } = await postDataHandler(resultData, "POST", "/results/submit_question")

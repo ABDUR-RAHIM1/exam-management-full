@@ -1,5 +1,6 @@
 import React from 'react';
-import CourseActions from './CourseActions';
+import CourseActions from '../course-list/CourseActions';
+// import CourseActions from './CourseActions';
 
 export default function PurcheseCard({ courseData }) {
     const { course, isEnrolled, isCompleted, purchaseDate } = courseData;

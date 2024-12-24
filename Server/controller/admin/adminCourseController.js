@@ -37,7 +37,8 @@ const createCourse = async (req, res) => {
 // Get all courses (ok admin / user)
 const getAllCourses = async (req, res) => {
     try {
-        const courses = await Course.find().sort({ createdAt: -1 });
+        const courses = await Course.find().sort({ createdAt: -1 })
+            .populate("questions")
         res.status(200).json(courses);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching courses', error });
@@ -48,7 +49,7 @@ const getAllCourses = async (req, res) => {
 const getCourseById = async (req, res) => {
     const { id } = req.params;
     try {
-        const course = await Course.findById(id);
+        const course = await Course.findById(id).populate("questions");
         if (!course) {
             return res.status(404).json({ message: 'Course not found' });
         }
@@ -61,7 +62,7 @@ const getCourseById = async (req, res) => {
 
 // get course by Link (Category - such as /BCS)
 const getCourseByCategory = async (req, res) => {
-    const { item } = req.query; 
+    const { item } = req.query;
     if (!item) {
         return res.status(400).json({ message: 'Query parameter "item" is required' });
     }

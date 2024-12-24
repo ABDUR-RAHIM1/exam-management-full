@@ -9,7 +9,7 @@ export default function CourseActions(props) {
     const { routinee } = props
 
     const handleRoutineeClick = (routinee) => {
-        router.push("/profile/routinee")
+        router.push("/profile/routine")
         setManageData(routinee)
     }
     return (
