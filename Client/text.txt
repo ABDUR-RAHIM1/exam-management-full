@@ -1,0 +1,21 @@
+user => 
+phone :  01321040273
+pass : 111111
+
+
+admin : 
+{ 
+  "email": "admin@gmail.com",
+  "role" :"admin",
+  "password": "myadmin"
+}
+
+
+/// (home) theke profile folder er name ti change kore testing er jonno alada (profile) korar jonno (profile) er moddhe profile name folder cearte kora holo .
+
+Profile Overview
+Course Lists
+Upcoming Exam
+My Exams
+Course Enrollment
+Profile Settings
